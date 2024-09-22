@@ -102,7 +102,18 @@ a {
   text-decoration: none;
 }
 
-
+.add-budget-btn {
+  background-color: #9072a5;
+  color: white;
+  padding: 15px;
+  border-radius: 10px;
+  border: none;
+  width: 100%;
+  text-align: center;
+  font-size: 16px;
+  margin-top: 15px;
+  cursor: pointer;
+}
 
 /* Transaction List */
 .transaction-list, .starred-list, .budget-list {
@@ -223,4 +234,12 @@ a {
   .nav-item i {
     font-size: 18px;
   }
+}
+
+/* For swiping effect */
+.budget-item.swiping-left {
+  transition: transform 0.3s ease;
+  transform: translateX(-100%); /* Move the item to the left */
+  background-color: red; /* Optional: Show red background when swiped */
+  color: white; /* Change text color to white */
 }
