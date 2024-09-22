@@ -51,10 +51,22 @@ function renderBalanceSheets() {
   const budgetPages = document.getElementById('budgetPages');
   budgetPages.innerHTML = ''; // Clear existing budget pages
 
+  // Example budget sheets (You can replace these with dynamic ones)
+  balanceSheets = [
+    { title: 'PC', amount: 3.27 },
+    { title: 'RBC', amount: 5.75 },
+    { title: 'October 1', amount: 2.36 },
+    // Add more sheets as needed
+  ];
+
   balanceSheets.forEach((sheet, index) => {
-    const button = document.createElement('button');
-    button.classList.add('btn-primary');
-    button.textContent = sheet.title;
+    const button = document.createElement('div');
+    button.classList.add('budget-item');
+    button.innerHTML = `
+      <span class="description">${sheet.title}</span>
+      <span class="amount">+ $${sheet.amount.toFixed(2)}</span>
+      <button class="more-btn">⋮</button>
+    `;
 
     button.addEventListener('click', function() {
       navigateTo(`custom_budget_template.html?sheetIndex=${index}`);
@@ -131,66 +143,3 @@ document.getElementById('submitTransaction')?.addEventListener('click', function
     alert('Please fill out all fields.');
   }
 });
-
-// Open modal to add income or expense
-document.getElementById('addIncomeBtn')?.addEventListener('click', function() {
-  document.getElementById('transactionModal').classList.add('active');
-  document.getElementById('modalTitle').textContent = 'Add Income';
-  document.getElementById('transactionForm').dataset.type = 'income';
-});
-
-document.getElementById('addExpenseBtn')?.addEventListener('click', function() {
-  document.getElementById('transactionModal').classList.add('active');
-  document.getElementById('modalTitle').textContent = 'Add Expense';
-  document.getElementById('transactionForm').dataset.type = 'expense';
-});
-
-// Close modal
-document.getElementById('closeModal')?.addEventListener('click', function() {
-  document.getElementById('transactionModal').classList.remove('active');
-});
-
-// Starred entries handling (Example for future use)
-function renderStarredEntries() {
-  const starredEntries = document.getElementById('starredEntries');
-  starredEntries.innerHTML = ''; // Clear existing starred entries
-
-  transactions.forEach((transaction, index) => {
-    const starredItem = document.createElement('div');
-    starredItem.classList.add('starred-item');
-    starredItem.innerHTML = `
-      <span class="description">${transaction.details}</span>
-      <span class="amount ${transaction.amount > 0 ? 'income' : 'expense'}">${transaction.amount > 0 ? '+' : ''} $${transaction.amount.toFixed(2)}</span>
-      <button class="add-to-budget-btn">Add to Budget</button>
-    `;
-
-    starredEntries.appendChild(starredItem);
-  });
-}
-
-// Logout button functionality
-document.getElementById('logoutBtn')?.addEventListener('click', function() {
-  alert("You have been logged out.");
-  navigateTo("login.html");
-});
-
-// Delete Account button functionality
-document.getElementById('deleteAccountBtn')?.addEventListener('click', function() {
-  if (confirm("Are you sure you want to delete your account?")) {
-    localStorage.clear(); // Clear all user data
-    alert("Account deleted.");
-    navigateTo("signup.html");
-  }
-});
-
-// Back button functionality for pages with back buttons
-document.querySelector('.back-btn')?.addEventListener('click', function() {
-  navigateTo('main.html');
-});
-
-// Initialize page and load transactions
-window.onload = function() {
-  renderBalanceSheets();  // Render budget pages on the main page
-  renderTransactions();   // Render transactions on custom budget template page
-  renderStarredEntries();  // Render starred entries on the starred page
-};

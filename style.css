@@ -6,12 +6,16 @@
   font-family: Arial, sans-serif;
 }
 
+body {
+  background-color: #f5f5f5;
+}
+
 /* Container */
 .container {
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
-  padding: 15px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -35,12 +39,42 @@ header button {
   cursor: pointer;
 }
 
+/* Form Styling (Login, Sign-Up, Settings, etc.) */
+.login-container, .signup-container, .settings-section, .account-section {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
 h1 {
   font-size: 24px;
   margin-bottom: 20px;
 }
 
-/* Buttons */
+.form-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+label {
+  font-size: 14px;
+  color: #555;
+  display: block;
+  margin-bottom: 5px;
+}
+
+input[type="text"], input[type="password"], input[type="email"], input[type="number"], input[type="date"], select {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
 .btn-primary {
   background-color: #4caf50;
   color: white;
@@ -63,51 +97,22 @@ h1 {
   margin-top: 15px;
 }
 
-.back-btn {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-/* Input fields */
-input[type="text"], input[type="password"], input[type="email"], input[type="number"], input[type="date"], select {
-  width: 100%;
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  margin-top: 10px;
-  margin-bottom: 20px;
-}
-
-label {
-  font-size: 14px;
-  color: #555;
-  display: block;
-  margin-bottom: 5px;
-}
-
-.form-group {
-  margin-bottom: 15px;
-  text-align: left;
-}
-
-/* Login & Signup Form Styling */
-.login-container, .signup-container {
-  background-color: white;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  width: 100%;
-  box-sizing: border-box;
-}
-
 a {
   color: #4caf50;
   text-decoration: none;
+}
+
+.add-budget-btn {
+  background-color: #9072a5;
+  color: white;
+  padding: 15px;
+  border-radius: 10px;
+  border: none;
+  width: 100%;
+  text-align: center;
+  font-size: 16px;
+  margin-top: 15px;
+  cursor: pointer;
 }
 
 /* Transaction List */
@@ -115,20 +120,23 @@ a {
   margin: 20px 0;
 }
 
-.transaction-item, .starred-item, .budget-item {
+.budget-item, .transaction-item, .starred-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: white;
+  border-radius: 10px;
   padding: 15px;
-  border-bottom: 1px solid #ddd;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.transaction-item .description, .starred-item .description, .budget-item .description {
+.description {
   font-size: 16px;
   color: #333;
 }
 
-.transaction-item .amount, .starred-item .amount {
+.amount {
   font-size: 16px;
 }
 
@@ -140,90 +148,37 @@ a {
   color: #d32f2f; /* Red for expense */
 }
 
-.date {
-  font-size: 14px;
-  color: #777;
-}
-
 .more-btn {
   background: none;
   border: none;
   font-size: 18px;
   cursor: pointer;
+  color: #666;
 }
 
-/* Add Income and Expense Buttons */
-.add-buttons {
+/* Bottom Navigation Bar */
+.bottom-nav {
   display: flex;
   justify-content: space-between;
-  margin: 20px 0;
-}
-
-.add-income, .add-expense {
-  width: 48%;
-  padding: 10px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.add-income {
-  background-color: #4caf50;
-  color: white;
-}
-
-.add-expense {
-  background-color: #f44336;
-  color: white;
-}
-
-/* Summary Section */
-.summary {
-  margin-bottom: 20px;
-}
-
-.summary-item {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px;
-}
-
-.summary-income {
-  color: #2e7d32;
-}
-
-.summary-expense {
-  color: #d32f2f;
-}
-
-.summary-balance {
-  color: #2e7d32;
-}
-
-/* Settings Section */
-.settings-section, .account-section {
-  margin-bottom: 20px;
-}
-
-.settings-item, .account-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   padding: 15px;
-  border-bottom: 1px solid #ddd;
+  background-color: #9072a5;
+  border-radius: 15px 15px 0 0;
 }
 
-.settings-item label {
-  display: inline-block;
-  font-size: 14px;
-  color: #555;
+.nav-item {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.settings-item input[type="checkbox"] {
-  width: auto;
-}
-
-select {
-  width: 60%;
+.nav-item i {
+  font-size: 20px;
+  margin-bottom: 5px;
 }
 
 /* Modal Styling */
@@ -262,18 +217,21 @@ select {
   border-radius: 5px;
 }
 
-/* Bottom Navigation Bar */
-.bottom-nav {
-  display: flex;
-  justify-content: space-between;
-  padding: 15px;
-  background-color: #9072a5;
-}
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
 
-.nav-item {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
+  .budget-item {
+    padding: 10px;
+  }
+
+  .add-budget-btn {
+    padding: 12px;
+  }
+
+  .nav-item i {
+    font-size: 18px;
+  }
 }

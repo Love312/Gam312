@@ -3,32 +3,57 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login</title>
+  <title>Main Page</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
 
-    <!-- Login Form -->
-    <div class="login-container">
-      <h1>Login</h1>
-      <form id="loginForm">
-        <div class="form-group">
-          <label for="username">Username</label>
-          <input type="text" id="username" required>
-        </div>
+    <!-- Header -->
+    <header>
+      <h1>Budgets</h1>
+      <button class="add-btn" id="addBudgetBtn">+</button>
+      <button class="menu-btn">☰</button>
+    </header>
 
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" id="password" required>
-        </div>
+    <!-- Budget List Section -->
+    <section class="budget-list" id="budgetPages">
+      <!-- Budget items will be dynamically added here -->
+    </section>
 
-        <button type="submit" class="btn-primary">Login</button>
-        <button id="devModeBtn" class="btn-secondary">Enter Developer Mode</button>
-      </form>
+    <!-- Add Budget Button -->
+    <button class="add-budget-btn" id="addBudgetBtn">Add Budget</button>
 
-      <p>Don’t have an account? <a href="signup.html">Sign Up</a></p>
+    <!-- Modal for adding new budget -->
+    <div id="budgetModal" class="modal">
+      <div class="modal-content">
+        <h2>Add New Budget</h2>
+        <label for="budgetTitleInput">Enter Budget Title:</label>
+        <input type="text" id="budgetTitleInput" required>
+        <button id="saveBudgetBtn" class="btn-primary">Save</button>
+        <button id="closeModal" class="btn-secondary">Close</button>
+      </div>
     </div>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="bottom-nav">
+      <button class="nav-item" id="navBudgets">
+        <i class="icon-home"></i>
+        <span>Budgets</span>
+      </button>
+      <button class="nav-item" id="navStarred">
+        <i class="icon-star"></i>
+        <span>Starred</span>
+      </button>
+      <button class="nav-item" id="navSettings">
+        <i class="icon-settings"></i>
+        <span>Settings</span>
+      </button>
+      <button class="nav-item" id="navAccount">
+        <i class="icon-account"></i>
+        <span>Account</span>
+      </button>
+    </nav>
 
   </div>
 
