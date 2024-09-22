@@ -235,11 +235,42 @@ a {
     font-size: 18px;
   }
 }
+/* Dropdown Menu Styling */
+.more-options {
+  position: relative;
+  display: inline-block;
+}
 
-/* For swiping effect */
-.budget-item.swiping-left {
-  transition: transform 0.3s ease;
-  transform: translateX(-100%); /* Move the item to the left */
-  background-color: red; /* Optional: Show red background when swiped */
-  color: white; /* Change text color to white */
+.more-options button {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 150px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content button {
+  background-color: white;
+  border: none;
+  padding: 12px 16px;
+  text-align: left;
+  width: 100%;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.dropdown-content button:hover {
+  background-color: #ddd;
+}
+
+.more-options.active .dropdown-content {
+  display: block;
 }
