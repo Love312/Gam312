@@ -3,16 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login</title>
+  <title>Sign Up</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
 
-    <!-- Login Form -->
-    <div class="login-container">
-      <h1>Login</h1>
-      <form id="loginForm">
+    <!-- Sign-Up Form -->
+    <div class="signup-container">
+      <h1>Sign Up</h1>
+      <form id="signupForm">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" required>
+        </div>
+
         <div class="form-group">
           <label for="username">Username</label>
           <input type="text" id="username" required>
@@ -23,11 +28,13 @@
           <input type="password" id="password" required>
         </div>
 
-        <button type="submit" class="btn-primary">Login</button>
-        <button id="devModeBtn" class="btn-secondary">Enter Developer Mode</button>
+        <button type="submit" class="btn-primary">Sign Up</button>
       </form>
 
-      <p>Don’t have an account? <a href="signup.html">Sign Up</a></p>
+      <p>Already have an account? <a href="login.html">Log In</a></p>
+
+      <!-- Developer Mode Button for testing without sign-up -->
+      <button id="devModeBtn" class="btn-secondary">Enter Developer Mode</button>
     </div>
 
   </div>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Main Page</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+
+    <!-- Header -->
+    <header>
+      <h1>Budgets</h1>
+      <button class="add-btn" id="addBudgetBtn">+</button>
+      <button class="menu-btn">☰</button>
+    </header>
+
+    <!-- Budget List Section -->
+    <section class="budget-list" id="budgetPages">
+      <!-- Example budget items will be dynamically added here -->
+    </section>
+
+    <!-- Add Budget Button -->
+    <button class="add-budget-btn" id="addBudgetBtn">Add Budget</button>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="bottom-nav">
+      <button class="nav-item" id="navBudgets">
+        <i class="icon-home"></i>
+        <span>Budgets</span>
+      </button>
+      <button class="nav-item" id="navStarred">
+        <i class="icon-star"></i>
+        <span>Starred</span>
+      </button>
+      <button class="nav-item" id="navSettings">
+        <i class="icon-settings"></i>
+        <span>Settings</span>
+      </button>
+      <button class="nav-item" id="navAccount">
+        <i class="icon-account"></i>
+        <span>Account</span>
+      </button>
+    </nav>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

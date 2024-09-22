@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Starred Entries</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+
+    <!-- Header -->
+    <header>
+      <button class="back-btn">← Back to Budgets</button>
+      <h1>Starred Entries</h1>
+    </header>
+
+    <!-- Starred Entries List -->
+    <section class="starred-list">
+      <h2>Your Starred Entries</h2>
+      <div id="starredEntries">
+        <!-- Starred entries will be dynamically listed here -->
+        <!-- Example: -->
+        <div class="starred-item">
+          <span class="description">Starred Transaction 1</span>
+          <span class="amount income">+ $500.00</span>
+          <button class="add-to-budget-btn">Add to Budget</button>
+        </div>
+        <div class="starred-item">
+          <span class="description">Starred Transaction 2</span>
+          <span class="amount expense">- $300.00</span>
+          <button class="add-to-budget-btn">Add to Budget</button>
+        </div>
+        <!-- More starred entries will be dynamically added here -->
+      </div>
+    </section>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="bottom-nav">
+      <button class="nav-item">Budgets</button>
+      <button class="nav-item">Starred</button>
+      <button class="nav-item">Settings</button>
+      <button class="nav-item">Account</button>
+    </nav>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

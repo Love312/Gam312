@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Account</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+
+    <!-- Header -->
+    <header>
+      <button class="back-btn">← Back to Budgets</button>
+      <h1>Account</h1>
+    </header>
+
+    <!-- Account Information Section -->
+    <section class="account-section">
+      <h2>Plan Status</h2>
+      <div class="account-item">
+        <span>Current Plan:</span>
+        <span id="currentPlan">Free</span>
+        <button class="btn-secondary">Upgrade Plan</button>
+      </div>
+
+      <h2>Manage Account</h2>
+      <div class="account-item">
+        <button class="btn-secondary" id="changeEmailBtn">Change Email Address</button>
+      </div>
+      <div class="account-item">
+        <button class="btn-secondary" id="logoutBtn">Log Out</button>
+      </div>
+      <div class="account-item">
+        <button class="btn-secondary" id="deleteAccountBtn">Delete Account</button>
+      </div>
+    </section>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="bottom-nav">
+      <button class="nav-item">Budgets</button>
+      <button class="nav-item">Starred</button>
+      <button class="nav-item">Settings</button>
+      <button class="nav-item">Account</button>
+    </nav>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

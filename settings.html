@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+
+    <!-- Header -->
+    <header>
+      <button class="back-btn">← Back to Budgets</button>
+      <h1>Settings</h1>
+    </header>
+
+    <!-- Settings Options -->
+    <section class="settings-section">
+      <h2>Account Details</h2>
+      <div class="settings-item">
+        <span>Email:</span>
+        <span id="accountEmail">user@example.com</span>
+        <button class="btn-secondary">Change Email</button>
+      </div>
+      <div class="settings-item">
+        <span>Password:</span>
+        <button class="btn-secondary">Change Password</button>
+      </div>
+
+      <h2>Appearance</h2>
+      <div class="settings-item">
+        <span>Dark Mode:</span>
+        <input type="checkbox" id="darkModeToggle">
+      </div>
+
+      <h2>Currency Settings</h2>
+      <div class="settings-item">
+        <label for="currencySelect">Preferred Currency:</label>
+        <select id="currencySelect">
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+          <option value="GBP">GBP</option>
+          <!-- Add more currencies as needed -->
+        </select>
+      </div>
+    </section>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="bottom-nav">
+      <button class="nav-item">Budgets</button>
+      <button class="nav-item">Starred</button>
+      <button class="nav-item">Settings</button>
+      <button class="nav-item">Account</button>
+    </nav>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

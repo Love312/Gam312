@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom Budget Template</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+
+    <!-- Header -->
+    <header>
+      <button class="back-btn">← Back to Budgets</button>
+      <h1>Custom Budget Template</h1>
+    </header>
+
+    <!-- Transaction List -->
+    <section class="transaction-list">
+      <!-- Transactions will be dynamically added here -->
+      <div class="transaction-item">
+        <span class="description">Sample Transaction</span>
+        <span class="amount income">+ $500.00</span>
+        <span class="date">22 Sep 2024</span>
+        <button class="more-btn">⋮</button>
+      </div>
+    </section>
+
+    <!-- Add Income and Expense Buttons -->
+    <section class="add-buttons">
+      <button class="add-income" id="addIncomeBtn">+ Add Income</button>
+      <button class="add-expense" id="addExpenseBtn">- Add Expense</button>
+    </section>
+
+    <!-- Summary Section -->
+    <section class="summary">
+      <div class="summary-item">
+        <span>Income:</span>
+        <span class="summary-income" id="totalIncome">+ $2,000.00</span>
+      </div>
+      <div class="summary-item">
+        <span>Expenses:</span>
+        <span class="summary-expense" id="totalExpenses">- $500.00</span>
+      </div>
+      <div class="summary-item">
+        <span>Balance:</span>
+        <span class="summary-balance" id="totalBalance">+ $1,500.00</span>
+      </div>
+    </section>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="bottom-nav">
+      <button class="nav-item">Budgets</button>
+      <button class="nav-item">Starred</button>
+      <button class="nav-item">Settings</button>
+      <button class="nav-item">Account</button>
+    </nav>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
