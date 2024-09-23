@@ -10,10 +10,6 @@ document.getElementById('devModeBtn')?.addEventListener('click', function () {
   navigateTo('main.html');
 });
 
-
-
-
-
 // Add event listener for the login form submission
 document.getElementById('loginForm')?.addEventListener('submit', function (e) {
   e.preventDefault();
@@ -32,9 +28,7 @@ document.getElementById('loginForm')?.addEventListener('submit', function (e) {
 });
 
 // Initialize balance sheets (example data, can be pulled from local storage)
-let balanceSheets = JSON.parse(localStorage.getItem('balanceSheets')) || [
-
-];
+let balanceSheets = JSON.parse(localStorage.getItem('balanceSheets')) || [];
 
 // Render the balance sheets with the options button appearing first
 function renderBalanceSheets() {
@@ -66,13 +60,11 @@ function renderBalanceSheets() {
 
     budgetPages.appendChild(budgetItem);
 
-
-
     // Make the budget item clickable to open the custom balance sheet
     budgetItem.addEventListener('click', function () {
-      // Navigate to the custom balance sheet template and pass the index as a URL parameter
       navigateTo(`custom_budget_template.html?budgetIndex=${index}`);
     });
+
     // Add event listeners for the buttons
     const moreBtn = budgetItem.querySelector('.more-btn');
     const renameBtn = budgetItem.querySelector('.rename-btn');
@@ -80,29 +72,33 @@ function renderBalanceSheets() {
     const duplicateBtn = budgetItem.querySelector('.duplicate-btn');
 
     // Toggle options dropdown
-    moreBtn.addEventListener('click', function () {
+    moreBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
       const options = budgetItem.querySelector('.dropdown-content');
       options.style.display = options.style.display === 'block' ? 'none' : 'block';
     });
 
     // Rename function
-    renameBtn.addEventListener('click', function () {
-      openRenameModal(index); // Pass index to rename modal
+    renameBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      openRenameModal(index);
     });
 
     // Delete function
-    deleteBtn.addEventListener('click', function () {
-      balanceSheets.splice(index, 1); // Remove from array
-      localStorage.setItem('balanceSheets', JSON.stringify(balanceSheets)); // Update local storage
-      renderBalanceSheets(); // Re-render budget list
+    deleteBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      balanceSheets.splice(index, 1); 
+      localStorage.setItem('balanceSheets', JSON.stringify(balanceSheets)); 
+      renderBalanceSheets(); 
     });
 
     // Duplicate function
-    duplicateBtn.addEventListener('click', function () {
+    duplicateBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
       const newBudget = { ...balanceSheets[index], title: `${balanceSheets[index].title} Copy` };
-      balanceSheets.push(newBudget); // Add duplicated budget
-      localStorage.setItem('balanceSheets', JSON.stringify(balanceSheets)); // Update local storage
-      renderBalanceSheets(); // Re-render budget list
+      balanceSheets.push(newBudget); 
+      localStorage.setItem('balanceSheets', JSON.stringify(balanceSheets));
+      renderBalanceSheets(); 
     });
   });
 }
@@ -111,7 +107,7 @@ function renderBalanceSheets() {
 function openRenameModal(index) {
   const renameModal = document.getElementById('renameModal');
   const renameInput = document.getElementById('renameBudgetInput');
-  if (!renameModal || !renameInput) return; // Ensure modal and input exist
+  if (!renameModal || !renameInput) return;
 
   renameModal.classList.add('active');
   renameInput.value = balanceSheets[index].title;
@@ -122,13 +118,12 @@ function openRenameModal(index) {
       balanceSheets[index].title = newTitle;
       localStorage.setItem('balanceSheets', JSON.stringify(balanceSheets));
       renderBalanceSheets();
-      renameModal.classList.remove('active'); // Close the modal
+      renameModal.classList.remove('active');
     } else {
       alert('Please enter a valid title.');
     }
   };
 
-  // Close modal
   document.getElementById('closeRenameModal').onclick = function () {
     renameModal.classList.remove('active');
   };
@@ -136,31 +131,26 @@ function openRenameModal(index) {
 
 // Add Budget Modal Logic
 document.getElementById('addBudgetBtn')?.addEventListener('click', function () {
-  // Open the modal for adding a budget
   document.getElementById('budgetModal').classList.add('active');
 });
 
-// Close Add Budget Modal
 document.getElementById('closeModal')?.addEventListener('click', function () {
   document.getElementById('budgetModal').classList.remove('active');
 });
 
-// Save the New Budget and Add it to the List
 document.getElementById('saveBudgetBtn')?.addEventListener('click', function () {
   const budgetTitle = document.getElementById('budgetTitleInput').value;
 
   if (budgetTitle) {
-    // Add new budget to the list
     const newBudget = {
       title: budgetTitle,
-      amount: 0 // Default amount for a new budget
+      amount: 0 
     };
 
-    balanceSheets.push(newBudget); // Add new budget to the array
-    localStorage.setItem('balanceSheets', JSON.stringify(balanceSheets)); // Update local storage
-    renderBalanceSheets(); // Re-render the budget list
+    balanceSheets.push(newBudget); 
+    localStorage.setItem('balanceSheets', JSON.stringify(balanceSheets));
+    renderBalanceSheets(); 
 
-    // Clear the input and close the modal
     document.getElementById('budgetTitleInput').value = '';
     document.getElementById('budgetModal').classList.remove('active');
   } else {
@@ -168,22 +158,35 @@ document.getElementById('saveBudgetBtn')?.addEventListener('click', function () 
   }
 });
 
-// Bottom navigation bar handling (example for navigation buttons)
+// Show/Hide Spending Limits Logic
+document.getElementById('toggleLimitsBtn')?.addEventListener('click', function () {
+  const limitSection = document.getElementById('limitSection');
+  const button = document.getElementById('toggleLimitsBtn');
+
+  if (limitSection.classList.contains('hidden')) {
+    limitSection.classList.remove('hidden');
+    button.textContent = 'Hide Spending Limits';
+  } else {
+    limitSection.classList.add('hidden');
+    button.textContent = 'Show Spending Limits';
+  }
+});
+
+// Bottom navigation bar handling
 document.getElementById('navBudgets')?.addEventListener('click', function () {
   navigateTo('main.html');
 });
 document.getElementById('navStarred')?.addEventListener('click', function () {
-  navigateTo('starred.html'); // Placeholder for starred page
+  navigateTo('starred.html');
 });
 document.getElementById('navSettings')?.addEventListener('click', function () {
-  navigateTo('settings.html'); // Placeholder for settings page
+  navigateTo('settings.html');
 });
 document.getElementById('navAccount')?.addEventListener('click', function () {
-  navigateTo('account.html'); // Placeholder for account page
+  navigateTo('account.html');
 });
 
 // Initialize the page and render budgets
 window.onload = function () {
   renderBalanceSheets();
 };
-

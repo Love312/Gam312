@@ -1,3 +1,5 @@
+
+
 /* General Reset */
 * {
   margin: 0;
@@ -99,6 +101,7 @@ a {
 }
 
 /* Buttons for Adding Winnings, Spending, and Limits */
+
 .add-buttons {
   display: flex;
   justify-content: space-between;
@@ -239,6 +242,7 @@ a {
 }
 
 /* Progress Bars */
+
 .progress-bars div {
   margin-bottom: 15px;
 }
@@ -352,4 +356,8 @@ a {
 
 .more-options.active .dropdown-content {
   display: block;
+}
+
+.hidden {
+  display: none;
 }
