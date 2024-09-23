@@ -173,9 +173,9 @@ document.getElementById('toggleLimitsBtn')?.addEventListener('click', function (
 });
 
 // Bottom navigation bar handling
-document.getElementById('navBudgets')?.addEventListener('click', function () {
-  navigateTo('main.html');
-});
+document.getElementById('navBudgets').addEventListener('click', function () {
+      navigateTo('main.html');
+    });
 document.getElementById('navStarred')?.addEventListener('click', function () {
   navigateTo('starred.html');
 });
