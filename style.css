@@ -21,7 +21,8 @@ body {
   padding: 20px;
   display: flex;
   flex-direction: column;
-  justify-content: flex;
+  justify-content: flex-start;
+  min-height: 100vh; /* Fill the full viewport height */
   overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
@@ -221,26 +222,24 @@ a {
   max-width: 600px;     /* Match the container width */
   margin: 0 auto;       /* Center the summary section */
   position: fixed;      /* Fixed positioning */
-  bottom: 60px;         /* Place above the bottom nav (height of the nav + padding) */
+  bottom: 60px;         /* Place above the bottom nav */
   z-index: 999;         /* Slightly below the bottom-nav */
   padding-left: 20px;   /* Align with container padding */
   padding-right: 20px;  /* Align with container padding */
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+  display: flex;        /* Use flexbox for horizontal layout */
+  justify-content: space-between; /* Spread items evenly */
+}
+
+.summary-section div {
+  flex: 1;  /* Each section gets equal space */
+  text-align: center; /* Center text within each section */
 }
 
 .summary-section p {
-  margin: 10px 0;
+  margin: 5px 0;
   font-size: 16px;
-  
-  
-  background: none;
-  border: none;
   color: black;
-  cursor: pointer;
-  
-  
-  align-items: center;
-  
 }
 
 /* Larger and bold text for Balance */
