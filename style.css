@@ -19,6 +19,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+ overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
 /* Header */
@@ -75,27 +76,7 @@ input[type="text"], input[type="password"], input[type="email"], input[type="num
   border-radius: 5px;
 }
 
-.btn-primary {
-  background-color: #4caf50;
-  color: white;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  width: 100%;
-  margin-top: 15px;
-}
 
-.btn-secondary {
-  background-color: #f44336;
-  color: white;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  width: 100%;
-  margin-top: 15px;
-}
 
 a {
   color: #4caf50;
@@ -114,6 +95,38 @@ a {
   margin-top: 15px;
   cursor: pointer;
 }
+
+/* Buttons for Adding Winnings, Spending, and Limits */
+.add-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.btn-primary, .btn-secondary, .btn-limit {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  color: white;
+}
+
+.btn-primary {
+  background-color: #4caf50; /* Green for Winnings */
+}
+
+.btn-secondary {
+  background-color: #ff5722; /* Orange for Spending */
+}
+
+.btn-limit {
+  background-color: #673ab7; /* Purple for Set Limit */
+}
+
+.btn-primary:hover, .btn-secondary:hover, .btn-limit:hover {
+  opacity: 0.8;
+}
+
 
 /* Transaction List */
 .transaction-list, .starred-list, .budget-list {
@@ -180,6 +193,58 @@ a {
   font-size: 20px;
   margin-bottom: 5px;
 }
+
+
+/* Summary Section */
+.summary-section {
+  background-color: white;
+  padding: 15px;
+  border-radius: 5px;
+  margin-top: 20px;
+  text-align: center;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.summary-section p {
+  margin: 10px 0;
+  font-size: 16px;
+}
+
+/* Larger and bold text for Balance */
+#totalBalance {
+  font-size: 24px;  
+  font-weight: bold;
+}
+
+/* Positive and Negative balance colors */
+.positive-balance {
+  color: #4caf50;  /* Green for positive balance */
+}
+
+.negative-balance {
+  color: #ff5722;  /* Red for negative balance */
+}
+
+/* Progress Bars */
+.progress-bars div {
+  margin-bottom: 15px;
+}
+
+.progress-bar-container {
+  width: 100%;
+  background-color: #e0e0e0;
+  border-radius: 10px;
+  height: 20px;
+  margin-top: 5px;
+}
+
+.progress-bar {
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.3s ease;
+}
+
+
 
 /* Modal Styling */
 .modal {

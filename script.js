@@ -10,6 +10,10 @@ document.getElementById('devModeBtn')?.addEventListener('click', function () {
   navigateTo('main.html');
 });
 
+
+
+
+
 // Add event listener for the login form submission
 document.getElementById('loginForm')?.addEventListener('submit', function (e) {
   e.preventDefault();
@@ -29,12 +33,10 @@ document.getElementById('loginForm')?.addEventListener('submit', function (e) {
 
 // Initialize balance sheets (example data, can be pulled from local storage)
 let balanceSheets = JSON.parse(localStorage.getItem('balanceSheets')) || [
-  { title: 'PC', amount: 3.27 },
-  { title: 'RBC', amount: 5.75 },
-  { title: 'October 1', amount: 2.36 }
+
 ];
 
-// Render the balance sheets with the options button
+// Render the balance sheets with the options button appearing first
 function renderBalanceSheets() {
   const budgetPages = document.getElementById('budgetPages');
   if (!budgetPages) return;  // Ensure the container exists
@@ -45,10 +47,7 @@ function renderBalanceSheets() {
     const budgetItem = document.createElement('div');
     budgetItem.classList.add('budget-item');
     budgetItem.innerHTML = `
-      <span class="description">${sheet.title}</span>
-      <span class="amount">+ $${sheet.amount.toFixed(2)}</span>
-
-      <!-- More Options Button -->
+      <!-- More Options Button (Appears First) -->
       <div class="more-options">
         <button class="more-btn">⋮</button>
         <div class="dropdown-content">
@@ -57,11 +56,24 @@ function renderBalanceSheets() {
           <button class="duplicate-btn" data-index="${index}">Duplicate</button>
         </div>
       </div>
+
+      <!-- Budget Title -->
+      <span class="description">${sheet.title}</span>
+
+      <!-- Budget Amount -->
+      <span class="amount">+ $${sheet.amount.toFixed(2)}</span>
     `;
 
     budgetPages.appendChild(budgetItem);
 
-    // Add event listeners for options
+
+
+    // Make the budget item clickable to open the custom balance sheet
+    budgetItem.addEventListener('click', function () {
+      // Navigate to the custom balance sheet template and pass the index as a URL parameter
+      navigateTo(`custom_budget_template.html?budgetIndex=${index}`);
+    });
+    // Add event listeners for the buttons
     const moreBtn = budgetItem.querySelector('.more-btn');
     const renameBtn = budgetItem.querySelector('.rename-btn');
     const deleteBtn = budgetItem.querySelector('.delete-btn');
@@ -174,3 +186,4 @@ document.getElementById('navAccount')?.addEventListener('click', function () {
 window.onload = function () {
   renderBalanceSheets();
 };
+
