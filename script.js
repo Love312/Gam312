@@ -103,139 +103,6 @@ function renderBalanceSheets() {
   });
 }
 
-// Initialize transactions from localStorage or set to an empty object
-let transactions = JSON.parse(localStorage.getItem('transactions')) || {};
-
-// Function to render the transaction list with options
-function renderTransactions(budgetTitle) {
-  const transactionsList = transactions[budgetTitle] || [];
-  const transactionsContainer = document.getElementById('transactions');
-  transactionsContainer.innerHTML = '';
-
-  transactionsList.forEach((transaction, index) => {
-    const transactionItem = document.createElement('div');
-    transactionItem.classList.add('transaction-item');
-    transactionItem.innerHTML = `
-      <div class="transaction-details">
-        <p>${transaction.details}</p>
-        <p>${transaction.date}</p>
-      </div>
-      <p class="transaction-amount ${transaction.type}">${transaction.type === 'income' ? '+' : '-'} $${transaction.amount.toFixed(2)}</p>
-
-      <!-- More Options Menu for each transaction -->
-      <div class="transaction-options">
-        <button class="more-btn">⋮</button>
-        <div class="transaction-dropdown-content">
-          <button class="edit-transaction-btn" data-index="${index}">Edit</button>
-          <button class="delete-transaction-btn" data-index="${index}">Delete</button>
-          <button class="duplicate-transaction-btn" data-index="${index}">Duplicate</button>
-        </div>
-      </div>
-    `;
-
-    transactionsContainer.appendChild(transactionItem);
-
-    // More Options Dropdown interaction
-    const moreBtn = transactionItem.querySelector('.more-btn');
-    const transactionOptions = transactionItem.querySelector('.transaction-options');
-
-    moreBtn.addEventListener('click', function (e) {
-      e.stopPropagation();
-      transactionOptions.classList.toggle('active'); // Toggle visibility
-    });
-
-    // Edit Transaction
-    const editBtn = transactionItem.querySelector('.edit-transaction-btn');
-    editBtn.addEventListener('click', function (e) {
-      e.stopPropagation();
-      openEditTransactionModal(index, budgetTitle);
-    });
-
-    // Delete Transaction
-    const deleteBtn = transactionItem.querySelector('.delete-transaction-btn');
-    deleteBtn.addEventListener('click', function (e) {
-      e.stopPropagation();
-      deleteTransaction(index, budgetTitle);
-    });
-
-    // Duplicate Transaction
-    const duplicateBtn = transactionItem.querySelector('.duplicate-transaction-btn');
-    duplicateBtn.addEventListener('click', function (e) {
-      e.stopPropagation();
-      duplicateTransaction(index, budgetTitle);
-    });
-  });
-}
-
-// Open modal to edit a transaction
-function openEditTransactionModal(index, budgetTitle) {
-  // Ensure the transaction is properly retrieved
-  const transaction = transactions[budgetTitle][index]; 
-  if (!transaction) {
-    console.error('Transaction not found');
-    return;
-  }
-
-  // Populate modal fields with transaction data
-  document.getElementById('transactionAmount').value = transaction.amount;
-  document.getElementById('transactionDate').value = transaction.date;
-  document.getElementById('transactionDetails').value = transaction.details;
-
-  // Update save button behavior to modify existing transaction
-  document.getElementById('saveTransactionBtn').onclick = function () {
-    const newAmount = parseFloat(document.getElementById('transactionAmount').value);
-    const newDate = document.getElementById('transactionDate').value;
-    const newDetails = document.getElementById('transactionDetails').value;
-
-    if (newAmount && newDate && newDetails) {
-      transactions[budgetTitle][index] = { 
-        amount: newAmount, 
-        date: newDate, 
-        details: newDetails, 
-        type: transaction.type  // Keep the original transaction type
-      };
-      localStorage.setItem('transactions', JSON.stringify(transactions));
-      renderTransactions(budgetTitle);
-      document.getElementById('transactionModal').classList.remove('active');
-    } else {
-      alert('Please fill out all fields.');
-    }
-  };
-
-  document.getElementById('transactionModal').classList.add('active');
-}
-
-// Delete a transaction
-function deleteTransaction(index, budgetTitle) {
-  transactions[budgetTitle].splice(index, 1);
-  localStorage.setItem('transactions', JSON.stringify(transactions));
-  renderTransactions(budgetTitle);
-}
-
-// Duplicate a transaction
-function duplicateTransaction(index, budgetTitle) {
-  const transaction = transactions[budgetTitle][index]; // Ensure transaction is retrieved
-  if (transaction) {
-    const newTransaction = { ...transaction }; // Clone the transaction object
-    transactions[budgetTitle].push(newTransaction); // Add the cloned transaction
-    localStorage.setItem('transactions', JSON.stringify(transactions));
-    renderTransactions(budgetTitle);
-  } else {
-    console.error('Transaction not found for duplication');
-  }
-}
-
-// Close transaction modal
-document.getElementById('closeModal').addEventListener('click', function () {
-  document.getElementById('transactionModal').classList.remove('active');
-});
-
-
-
-
-
-
-
 // Open Rename Modal and handle renaming
 function openRenameModal(index) {
   const renameModal = document.getElementById('renameModal');
@@ -306,9 +173,9 @@ document.getElementById('toggleLimitsBtn')?.addEventListener('click', function (
 });
 
 // Bottom navigation bar handling
-document.getElementById('navBudgets').addEventListener('click', function () {
-      navigateTo('main.html');
-    });
+document.getElementById('navBudgets')?.addEventListener('click', function () {
+  navigateTo('main.html');
+});
 document.getElementById('navStarred')?.addEventListener('click', function () {
   navigateTo('starred.html');
 });
