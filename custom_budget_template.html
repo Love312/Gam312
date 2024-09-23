@@ -13,21 +13,20 @@
       <h1 id="budgetTitle">Loading...</h1>
     </header>
 
-
-     <!-- Buttons to Add Winnings, Spending -->
-    <div class="add-buttons">
-      <button id="addWinningsBtn" class="btn-primary">+ Winnings</button>
-      <button id="addSpendingBtn" class="btn-secondary">- Spending</button>
-    </div>
-<!-- Transactions List -->
+    <!-- Transactions List -->
     <section id="transactions">
       <!-- Transactions will be populated here -->
     </section>
-    <!-- Toggle Visibility of Limits and Progress Bars -->
-    <button id="toggleLimitsBtn" class="btn-limit">Show Spending Limits</button>
 
-    <!-- Progress Bars for Weekly, Monthly, and Yearly Limits (Initially hidden) -->
-    <div id="limitSection" class="progress-bars hidden">
+    <!-- Buttons to Add Winnings, Spending, and Set Limits -->
+    <div class="add-buttons">
+      <button id="addWinningsBtn" class="btn-primary">+ Winnings</button>
+      <button id="addSpendingBtn" class="btn-secondary">- Spending</button>
+      <button id="setLimitBtn" class="btn-limit">Set Spending Limit</button>
+    </div>
+
+    <!-- Progress Bars for Weekly, Monthly, and Yearly Limits -->
+    <div class="progress-bars">
       <div>
         <p>Weekly Limit: <span id="weeklyLimitProgress">0%</span></p>
         <div class="progress-bar-container">
@@ -46,11 +45,8 @@
           <div id="yearlyProgressBar" class="progress-bar"></div>
         </div>
       </div>
-
-      <!-- Button to Set Spending Limits -->
-      <button id="setLimitBtn" class="btn-limit">Set Spending Limit</button>
     </div>
-    
+
     <!-- Summary Section for Income, Expenses, and Balance -->
     <div class="summary-section">
       <p>Income: <span id="totalIncome">+ $0.00</span></p>
@@ -227,13 +223,13 @@
       document.getElementById('weeklyLimitProgress').textContent = `${Math.min(weeklyProgress, 100).toFixed(0)}%`;
       document.getElementById('weeklyProgressBar').style.width = `${Math.min(weeklyProgress, 100)}%`;
       if (weeklyProgress >= 100) {
-        document.getElementById('weeklyProgressBar').style.backgroundColor = 'red';
+        document.getElementById('weeklyProgressBar').style.backgroundColor = 'red'; // Over limit, change color to red
       } else if (weeklyProgress >= 75) {
-        document.getElementById('weeklyProgressBar').style.backgroundColor = 'orange';
+        document.getElementById('weeklyProgressBar').style.backgroundColor = 'orange'; // 75% or more, orange
       } else if (weeklyProgress >= 50) {
-        document.getElementById('weeklyProgressBar').style.backgroundColor = 'yellow';
+        document.getElementById('weeklyProgressBar').style.backgroundColor = 'yellow'; // 50% or more, yellow
       } else {
-        document.getElementById('weeklyProgressBar').style.backgroundColor = 'green';
+        document.getElementById('weeklyProgressBar').style.backgroundColor = 'green'; // Under 50%, green
       }
 
       // Update monthly progress bar
@@ -262,20 +258,6 @@
         document.getElementById('yearlyProgressBar').style.backgroundColor = 'green';
       }
     }
-
-    // Toggle visibility of the limit section
-    document.getElementById('toggleLimitsBtn').addEventListener('click', function () {
-      const limitSection = document.getElementById('limitSection');
-      const button = document.getElementById('toggleLimitsBtn');
-
-      if (limitSection.classList.contains('hidden')) {
-        limitSection.classList.remove('hidden');
-        button.textContent = 'Hide Spending Limits';
-      } else {
-        limitSection.classList.add('hidden');
-        button.textContent = 'Show Spending Limits';
-      }
-    });
 
     // Close transaction and limit modals
     document.getElementById('closeModal').addEventListener('click', function () {
