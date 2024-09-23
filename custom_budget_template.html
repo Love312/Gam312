@@ -11,13 +11,15 @@
     <!-- Title of the budget sheet -->
     <header>
       <h1 id="budgetTitle">Loading...</h1>
+        <h1> <span id="totalBalance1">+ $0.00</span></h1>
+     
     </header>
 
 
      <!-- Buttons to Add Winnings, Spending -->
     <div class="add-buttons">
       <button id="addWinningsBtn" class="btn-primary">+ Winnings</button>
-      <button id="addSpendingBtn" class="btn-secondary">- Spending</button>
+      <button id="addSpendingBtn" class="btn-secondary">- Spendings</button>
     </div>
 
     <!-- Transactions List -->
@@ -55,8 +57,8 @@
     
     <!-- Summary Section for Income, Expenses, and Balance -->
     <div class="summary-section">
-      <p>Income: <span id="totalIncome">+ $0.00</span></p>
-      <p>Expenses: <span id="totalExpenses">- $0.00</span></p>
+      <p>Winnings <span id="totalIncome">+ $0.00</span></p>
+      <p>Spendings <span id="totalExpenses">- $0.00</span></p>
       <p>Balance: <span id="totalBalance">+ $0.00</span></p>
     </div>
 
@@ -171,6 +173,7 @@
       document.getElementById('totalIncome').textContent = `+ $${totalIncome.toFixed(2)}`;
       document.getElementById('totalExpenses').textContent = `- $${totalExpenses.toFixed(2)}`;
       document.getElementById('totalBalance').textContent = `${totalBalance >= 0 ? '+' : '-'} $${Math.abs(totalBalance).toFixed(2)}`;
+      document.getElementById('totalBalance1').textContent = `${totalBalance >= 0 ? '+' : '-'} $${Math.abs(totalBalance).toFixed(2)}`;
     }
 
     // Open modal to add winnings or spending
