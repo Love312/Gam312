@@ -8,18 +8,19 @@
 
 body {
   background-color: #f5f5f5;
+  padding-bottom: 80px; /* Space for bottom navigation bar */
 }
 
 /* Container */
 .container {
   width: 100%;
-  max-width: 600px;
+  max-width: 600px; /* Match this width */
   margin: 0 auto;
   padding: 20px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
- overflow-x: hidden; /* Prevent horizontal scrolling */
+  justify-content: flex;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
 /* Header */
@@ -30,6 +31,7 @@ header {
   background-color: #9072a5;
   color: white;
   padding: 15px;
+  
 }
 
 header button {
@@ -173,16 +175,16 @@ a {
 .bottom-nav {
   display: flex;
   justify-content: space-between;
-  padding: 20px;
+  padding: 15px;
   background-color: #9072a5;
   border-radius: 15px 15px 0 0;
-
-
   position: fixed; /* Fixed at the bottom */
   bottom: 0;       /* Align to bottom of screen */
   width: 100%;     /* Full screen width */
-  
-  z-index: 1000;   /* Ensure it's on top */
+    max-width: 600px;     /* Match the container width */
+  margin: 0 auto;       /* Center the navigation bar */
+  z-index: 1000;        /* Ensure it's on top */
+
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1); /* Shadow for depth */
 }
 
@@ -307,6 +309,7 @@ a {
   .nav-item i {
     font-size: 18px;
   }
+  
 }
 /* Dropdown Menu Styling */
 .more-options {
