@@ -11,12 +11,10 @@
     <!-- Title of the budget sheet -->
     <header>
       <h1 id="budgetTitle">Loading...</h1>
-        <h1> <span id="totalBalance1">+ $0.00</span></h1>
-     
+      <h1><span id="totalBalance1">+ $0.00</span></h1>
     </header>
 
-
-     <!-- Buttons to Add Winnings, Spending -->
+    <!-- Buttons to Add Winnings, Spending -->
     <div class="add-buttons">
       <button id="addWinningsBtn" class="btn-primary">+ Winnings</button>
       <button id="addSpendingBtn" class="btn-secondary">- Spendings</button>
@@ -26,7 +24,7 @@
     <section id="transactions">
       <!-- Transactions will be populated here -->
     </section>
-    
+
     <!-- Toggle Visibility of Limits and Progress Bars -->
     <button id="toggleLimitsBtn" class="btn-limit">Show Spending Limits</button>
 
@@ -54,11 +52,11 @@
       <!-- Button to Set Spending Limits -->
       <button id="setLimitBtn" class="btn-limit">Set Spending Limit</button>
     </div>
-    
+
     <!-- Summary Section for Income, Expenses, and Balance -->
     <div class="summary-section">
-      <p>Winnings <span id="totalIncome">+ $0.00</span></p>
-      <p>Spendings <span id="totalExpenses">- $0.00</span></p>
+      <p>Winnings: <span id="totalIncome">+ $0.00</span></p>
+      <p>Spendings: <span id="totalExpenses">- $0.00</span></p>
       <p>Balance: <span id="totalBalance">+ $0.00</span></p>
     </div>
 
@@ -114,16 +112,13 @@
   </div>
 
   <script>
-    // Get the budget index from the URL
     const urlParams = new URLSearchParams(window.location.search);
     const budgetIndex = urlParams.get('budgetIndex');
 
-    // Retrieve the balance sheets and transactions from localStorage
     let balanceSheets = JSON.parse(localStorage.getItem('balanceSheets')) || [];
     let transactions = JSON.parse(localStorage.getItem('transactions')) || {};
     let spendingLimits = JSON.parse(localStorage.getItem('spendingLimits')) || { weekly: 0, monthly: 0, yearly: 0 };
 
-    // Display the budget data
     if (budgetIndex !== null && balanceSheets[budgetIndex]) {
       const budget = balanceSheets[budgetIndex];
       document.getElementById('budgetTitle').textContent = budget.title;
@@ -134,185 +129,123 @@
       document.getElementById('budgetTitle').textContent = 'Budget Not Found';
     }
 
-    // Function to render transactions
     function renderTransactions(budgetTitle) {
       const transactionsList = transactions[budgetTitle] || [];
       const transactionsContainer = document.getElementById('transactions');
       transactionsContainer.innerHTML = '';
 
-      transactionsList.forEach((transaction) => {
+      transactionsList.forEach((transaction, index) => {
         const transactionItem = document.createElement('div');
         transactionItem.classList.add('transaction-item');
         transactionItem.innerHTML = `
-          <div>
-            <p class="transaction-details">${transaction.details}</p>
-            <p class="transaction-date">${transaction.date}</p>
+          <div class="transaction-details">
+            <p>${transaction.details}</p>
+            <p>${transaction.date}</p>
           </div>
           <p class="transaction-amount ${transaction.type}">${transaction.type === 'income' ? '+' : '-'} $${transaction.amount.toFixed(2)}</p>
+
+          <!-- More Options Menu for each transaction -->
+          <div class="transaction-options">
+            <button class="more-btn">⋮</button>
+            <div class="transaction-dropdown-content">
+              <button class="edit-transaction-btn" data-index="${index}">Edit</button>
+              <button class="delete-transaction-btn" data-index="${index}">Delete</button>
+              <button class="duplicate-transaction-btn" data-index="${index}">Duplicate</button>
+            </div>
+          </div>
         `;
         transactionsContainer.appendChild(transactionItem);
+
+        // More Options Dropdown interaction
+        const moreBtn = transactionItem.querySelector('.more-btn');
+        const transactionOptions = transactionItem.querySelector('.transaction-options');
+
+        moreBtn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          transactionOptions.classList.toggle('active');
+        });
+
+        // Edit Transaction
+        const editBtn = transactionItem.querySelector('.edit-transaction-btn');
+        editBtn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          openEditTransactionModal(index, budgetTitle);
+        });
+
+        // Delete Transaction
+        const deleteBtn = transactionItem.querySelector('.delete-transaction-btn');
+        deleteBtn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          deleteTransaction(index, budgetTitle);
+        });
+
+        // Duplicate Transaction
+        const duplicateBtn = transactionItem.querySelector('.duplicate-transaction-btn');
+        duplicateBtn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          duplicateTransaction(index, budgetTitle);
+        });
       });
     }
 
-    // Function to calculate and display income, expenses, and balance
-    function calculateSummary() {
-      const budgetTitle = balanceSheets[budgetIndex].title;
-      const transactionsList = transactions[budgetTitle] || [];
-      let totalIncome = 0;
-      let totalExpenses = 0;
-
-      transactionsList.forEach((transaction) => {
-        if (transaction.type === 'income') {
-          totalIncome += transaction.amount;
-        } else {
-          totalExpenses += transaction.amount;
-        }
-      });
-
-      const totalBalance = totalIncome - totalExpenses;
-      document.getElementById('totalIncome').textContent = `+ $${totalIncome.toFixed(2)}`;
-      document.getElementById('totalExpenses').textContent = `- $${totalExpenses.toFixed(2)}`;
-      document.getElementById('totalBalance').textContent = `${totalBalance >= 0 ? '+' : '-'} $${Math.abs(totalBalance).toFixed(2)}`;
-      document.getElementById('totalBalance1').textContent = `${totalBalance >= 0 ? '+' : '-'} $${Math.abs(totalBalance).toFixed(2)}`;
-    }
-
-    // Open modal to add winnings or spending
-    document.getElementById('addWinningsBtn').addEventListener('click', function () {
-      document.getElementById('transactionModal').classList.add('active');
-      document.getElementById('modalTitle').textContent = 'Add Winnings';
-      document.getElementById('saveTransactionBtn').dataset.type = 'income';
-    });
-
-    document.getElementById('addSpendingBtn').addEventListener('click', function () {
-      document.getElementById('transactionModal').classList.add('active');
-      document.getElementById('modalTitle').textContent = 'Add Spending';
-      document.getElementById('saveTransactionBtn').dataset.type = 'expense';
-    });
-
-    // Open modal to set limits
-    document.getElementById('setLimitBtn').addEventListener('click', function () {
-      document.getElementById('limitModal').classList.add('active');
-    });
-
-    // Save limits and update progress bars
-    document.getElementById('saveLimitBtn').addEventListener('click', function () {
-      const weeklyLimit = parseFloat(document.getElementById('weeklyLimit').value);
-      const monthlyLimit = parseFloat(document.getElementById('monthlyLimit').value);
-      const yearlyLimit = parseFloat(document.getElementById('yearlyLimit').value);
-
-      spendingLimits = { weekly: weeklyLimit, monthly: monthlyLimit, yearly: yearlyLimit };
-      localStorage.setItem('spendingLimits', JSON.stringify(spendingLimits));
-      updateProgressBars();
-      document.getElementById('limitModal').classList.remove('active');
-    });
-
-    // Function to update progress bars
-    function updateProgressBars() {
-      const budgetTitle = balanceSheets[budgetIndex].title;
-      const transactionsList = transactions[budgetTitle] || [];
-      let totalExpenses = 0;
-
-      // Calculate total expenses
-      transactionsList.forEach((transaction) => {
-        if (transaction.type === 'expense') {
-          totalExpenses += transaction.amount;
-        }
-      });
-
-      // Calculate progress for weekly, monthly, and yearly limits
-      const weeklyLimit = spendingLimits.weekly || 0;
-      const monthlyLimit = spendingLimits.monthly || 0;
-      const yearlyLimit = spendingLimits.yearly || 0;
-
-      const weeklyProgress = weeklyLimit > 0 ? (totalExpenses / weeklyLimit) * 100 : 0;
-      const monthlyProgress = monthlyLimit > 0 ? (totalExpenses / monthlyLimit) * 100 : 0;
-      const yearlyProgress = yearlyLimit > 0 ? (totalExpenses / yearlyLimit) * 100 : 0;
-
-      // Update weekly progress bar
-      document.getElementById('weeklyLimitProgress').textContent = `${Math.min(weeklyProgress, 100).toFixed(0)}%`;
-      document.getElementById('weeklyProgressBar').style.width = `${Math.min(weeklyProgress, 100)}%`;
-      if (weeklyProgress >= 100) {
-        document.getElementById('weeklyProgressBar').style.backgroundColor = 'red';
-      } else if (weeklyProgress >= 75) {
-        document.getElementById('weeklyProgressBar').style.backgroundColor = 'orange';
-      } else if (weeklyProgress >= 50) {
-        document.getElementById('weeklyProgressBar').style.backgroundColor = 'yellow';
-      } else {
-        document.getElementById('weeklyProgressBar').style.backgroundColor = 'green';
-      }
-
-      // Update monthly progress bar
-      document.getElementById('monthlyLimitProgress').textContent = `${Math.min(monthlyProgress, 100).toFixed(0)}%`;
-      document.getElementById('monthlyProgressBar').style.width = `${Math.min(monthlyProgress, 100)}%`;
-      if (monthlyProgress >= 100) {
-        document.getElementById('monthlyProgressBar').style.backgroundColor = 'red';
-      } else if (monthlyProgress >= 75) {
-        document.getElementById('monthlyProgressBar').style.backgroundColor = 'orange';
-      } else if (monthlyProgress >= 50) {
-        document.getElementById('monthlyProgressBar').style.backgroundColor = 'yellow';
-      } else {
-        document.getElementById('monthlyProgressBar').style.backgroundColor = 'green';
-      }
-
-      // Update yearly progress bar
-      document.getElementById('yearlyLimitProgress').textContent = `${Math.min(yearlyProgress, 100).toFixed(0)}%`;
-      document.getElementById('yearlyProgressBar').style.width = `${Math.min(yearlyProgress, 100)}%`;
-      if (yearlyProgress >= 100) {
-        document.getElementById('yearlyProgressBar').style.backgroundColor = 'red';
-      } else if (yearlyProgress >= 75) {
-        document.getElementById('yearlyProgressBar').style.backgroundColor = 'orange';
-      } else if (yearlyProgress >= 50) {
-        document.getElementById('yearlyProgressBar').style.backgroundColor = 'yellow';
-      } else {
-        document.getElementById('yearlyProgressBar').style.backgroundColor = 'green';
-      }
-    }
-
-    // Toggle visibility of the limit section
-    document.getElementById('toggleLimitsBtn').addEventListener('click', function () {
-      const limitSection = document.getElementById('limitSection');
-      const button = document.getElementById('toggleLimitsBtn');
-
-      if (limitSection.classList.contains('hidden')) {
-        limitSection.classList.remove('hidden');
-        button.textContent = 'Hide Spending Limits';
-      } else {
-        limitSection.classList.add('hidden');
-        button.textContent = 'Show Spending Limits';
-      }
-    });
-
-    // Close transaction and limit modals
-    document.getElementById('closeModal').addEventListener('click', function () {
-      document.getElementById('transactionModal').classList.remove('active');
-    });
-
-    document.getElementById('closeLimitModal').addEventListener('click', function () {
-      document.getElementById('limitModal').classList.remove('active');
-    });
-
-    // Save transaction
-    document.getElementById('saveTransactionBtn').addEventListener('click', function () {
-      const budgetTitle = balanceSheets[budgetIndex].title;
-      const amount = parseFloat(document.getElementById('transactionAmount').value);
-      const date = document.getElementById('transactionDate').value;
-      const details = document.getElementById('transactionDetails').value;
-      const type = document.getElementById('saveTransactionBtn').dataset.type;
-
-      if (!amount || !date || !details) {
-        alert('Please fill out all fields.');
+    // Open modal to edit a transaction
+    function openEditTransactionModal(index, budgetTitle) {
+      const transaction = transactions[budgetTitle][index];
+      if (!transaction) {
+        console.error('Transaction not found');
         return;
       }
 
-      const transaction = { amount, date, details, type };
-      transactions[budgetTitle] = transactions[budgetTitle] || [];
-      transactions[budgetTitle].push(transaction);
-      localStorage.setItem('transactions', JSON.stringify(transactions));
+      document.getElementById('transactionAmount').value = transaction.amount;
+      document.getElementById('transactionDate').value = transaction.date;
+      document.getElementById('transactionDetails').value = transaction.details;
 
-      document.getElementById('transactionModal').classList.remove('active');
+      document.getElementById('saveTransactionBtn').onclick = function () {
+        const newAmount = parseFloat(document.getElementById('transactionAmount').value);
+        const newDate = document.getElementById('transactionDate').value;
+        const newDetails = document.getElementById('transactionDetails').value;
+
+        if (newAmount && newDate && newDetails) {
+          transactions[budgetTitle][index] = { 
+            amount: newAmount, 
+            date: newDate, 
+            details: newDetails, 
+            type: transaction.type
+          };
+          localStorage.setItem('transactions', JSON.stringify(transactions));
+          renderTransactions(budgetTitle);
+          document.getElementById('transactionModal').classList.remove('active');
+        } else {
+          alert('Please fill out all fields.');
+        }
+      };
+
+      document.getElementById('transactionModal').classList.add('active');
+    }
+
+    // Delete a transaction
+    function deleteTransaction(index, budgetTitle) {
+      transactions[budgetTitle].splice(index, 1);
+      localStorage.setItem('transactions', JSON.stringify(transactions));
       renderTransactions(budgetTitle);
-      calculateSummary();
-      updateProgressBars(); // Recalculate and update progress bars after adding a transaction
+    }
+
+    // Duplicate a transaction
+    function duplicateTransaction(index, budgetTitle) {
+      const transaction = transactions[budgetTitle][index];
+      if (transaction) {
+        const newTransaction = { ...transaction };
+        transactions[budgetTitle].push(newTransaction);
+        localStorage.setItem('transactions', JSON.stringify(transactions));
+        renderTransactions(budgetTitle);
+      } else {
+        console.error('Transaction not found for duplication');
+      }
+    }
+
+    // Close transaction modal
+    document.getElementById('closeModal').addEventListener('click', function () {
+      document.getElementById('transactionModal').classList.remove('active');
     });
 
     // Initialize navigation buttons

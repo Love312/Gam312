@@ -175,10 +175,11 @@ a {
   color: #666;
 }
 
-/* Transaction Options Dropdown Styling */
+/* Dropdown Menu for Transaction Editing (⋮) */
 .transaction-options {
   position: relative;
   display: inline-block;
+  margin-left: 10px; /* Adjust the left margin if needed */
 }
 
 .transaction-options button {
@@ -190,8 +191,9 @@ a {
 }
 
 .transaction-dropdown-content {
-  display: none; /* Initially hidden */
+  display: none;
   position: absolute;
+  left: 0; /* Ensure the dropdown aligns to the left */
   background-color: #f9f9f9;
   min-width: 150px;
   box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
@@ -212,10 +214,10 @@ a {
   background-color: #f1f1f1;
 }
 
-/* Show the dropdown when parent is active */
 .transaction-options.active .transaction-dropdown-content {
   display: block;
 }
+
 
 
 /* Bottom Navigation Bar */

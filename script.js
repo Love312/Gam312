@@ -103,6 +103,8 @@ function renderBalanceSheets() {
   });
 }
 
+// Initialize transactions from localStorage or set to an empty object
+let transactions = JSON.parse(localStorage.getItem('transactions')) || {};
 
 // Function to render the transaction list with options
 function renderTransactions(budgetTitle) {
@@ -167,7 +169,14 @@ function renderTransactions(budgetTitle) {
 
 // Open modal to edit a transaction
 function openEditTransactionModal(index, budgetTitle) {
-  const transaction = transactions[budgetTitle][index];
+  // Ensure the transaction is properly retrieved
+  const transaction = transactions[budgetTitle][index]; 
+  if (!transaction) {
+    console.error('Transaction not found');
+    return;
+  }
+
+  // Populate modal fields with transaction data
   document.getElementById('transactionAmount').value = transaction.amount;
   document.getElementById('transactionDate').value = transaction.date;
   document.getElementById('transactionDetails').value = transaction.details;
@@ -179,7 +188,12 @@ function openEditTransactionModal(index, budgetTitle) {
     const newDetails = document.getElementById('transactionDetails').value;
 
     if (newAmount && newDate && newDetails) {
-      transactions[budgetTitle][index] = { amount: newAmount, date: newDate, details: newDetails, type: transaction.type };
+      transactions[budgetTitle][index] = { 
+        amount: newAmount, 
+        date: newDate, 
+        details: newDetails, 
+        type: transaction.type  // Keep the original transaction type
+      };
       localStorage.setItem('transactions', JSON.stringify(transactions));
       renderTransactions(budgetTitle);
       document.getElementById('transactionModal').classList.remove('active');
@@ -200,11 +214,21 @@ function deleteTransaction(index, budgetTitle) {
 
 // Duplicate a transaction
 function duplicateTransaction(index, budgetTitle) {
-  const transaction = { ...transactions[budgetTitle][index] };
-  transactions[budgetTitle].push(transaction);
-  localStorage.setItem('transactions', JSON.stringify(transactions));
-  renderTransactions(budgetTitle);
+  const transaction = transactions[budgetTitle][index]; // Ensure transaction is retrieved
+  if (transaction) {
+    const newTransaction = { ...transaction }; // Clone the transaction object
+    transactions[budgetTitle].push(newTransaction); // Add the cloned transaction
+    localStorage.setItem('transactions', JSON.stringify(transactions));
+    renderTransactions(budgetTitle);
+  } else {
+    console.error('Transaction not found for duplication');
+  }
 }
+
+// Close transaction modal
+document.getElementById('closeModal').addEventListener('click', function () {
+  document.getElementById('transactionModal').classList.remove('active');
+});
 
 
 
