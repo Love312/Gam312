@@ -1,5 +1,3 @@
-
-
 /* General Reset */
 * {
   margin: 0;
@@ -33,7 +31,6 @@ header {
   background-color: #9072a5;
   color: white;
   padding: 15px;
-  
 }
 
 /* General header image size */
@@ -46,10 +43,6 @@ header {
 .large-image {
   width: 40px;  /* 30px + 30% = 39px */
   height: 40px; /* 30px + 30% = 39px */
-}
-
-/* Flex-grow to ensure it's always centered */
-.large-image {
   margin: 0 auto; /* Auto margin centers the large image horizontally */
 }
 
@@ -97,8 +90,6 @@ input[type="text"], input[type="password"], input[type="email"], input[type="num
   border-radius: 5px;
 }
 
-
-
 a {
   color: #4caf50;
   text-decoration: none;
@@ -118,12 +109,12 @@ a {
 }
 
 /* Buttons for Adding Winnings, Spending, and Limits */
-
 .add-buttons {
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
 }
+
 .btn-primary, .btn-secondary, .btn-limit {
   padding: 10px 15px;
   border: none;
@@ -148,7 +139,6 @@ a {
 .btn-primary:hover, .btn-secondary:hover, .btn-limit:hover {
   opacity: 0.8;
 }
-
 
 /* Transaction List */
 .transaction-list, .starred-list, .budget-list {
@@ -191,20 +181,54 @@ a {
   color: #666;
 }
 
+/* Dropdown Menu Styling */
+.transaction-options {
+  position: relative;
+}
+
+.transaction-dropdown-content {
+  display: none;
+  position: absolute;
+  left: -10px; /* Ensures it is aligned on the left */
+  top: 30px; /* Position it under the "⋮" button */
+  background-color: #f9f9f9;
+  min-width: 150px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  border-radius: 5px;
+}
+
+.transaction-dropdown-content button {
+  background-color: white;
+  border: none;
+  padding: 12px;
+  text-align: left;
+  width: 100%;
+  cursor: pointer;
+}
+
+.transaction-dropdown-content button:hover {
+  background-color: #ddd;
+}
+
+.transaction-options.active .transaction-dropdown-content {
+  display: block;
+}
+
+
 /* Bottom Navigation Bar */
 .bottom-nav {
   display: flex;
   justify-content: space-between;
   padding: 15px;
   background-color: #9072a5;
-
   position: fixed; /* Fixed at the bottom */
-  bottom: 0;       /* Align to bottom of screen */
-  width: 100%;     /* Full screen width */
-  max-width: 600px;     /* Match the container width */
-  margin: 0 auto;       /* Center the navigation bar */
-  z-index: 1000;        /* Ensure it's on top */
- left: 0;
+  bottom: 0; /* Align to bottom of screen */
+  width: 100%; /* Full screen width */
+  max-width: 600px; /* Match the container width */
+  margin: 0 auto; /* Center the navigation bar */
+  z-index: 1000; /* Ensure it's on top */
+  left: 0;
   right: 0;
   padding-left: 20px; /* Align with container padding */
   padding-right: 20px; /* Align with container padding */
@@ -224,13 +248,11 @@ a {
   padding: 10px;
 }
 
-
 .nav-item img {
   width: 30px; /* Adjust size */
   height: 30px;
   margin-bottom: 5px; /* Space between icon and text (if any) */
 }
-
 
 /* Summary Section */
 .summary-section {
@@ -249,21 +271,20 @@ a {
 
 /* Larger and bold text for Balance */
 #totalBalance {
-  font-size: 24px;  
+  font-size: 24px;
   font-weight: bold;
 }
 
 /* Positive and Negative balance colors */
 .positive-balance {
-  color: #4caf50;  /* Green for positive balance */
+  color: #4caf50; /* Green for positive balance */
 }
 
 .negative-balance {
-  color: #ff5722;  /* Red for negative balance */
+  color: #ff5722; /* Red for negative balance */
 }
 
 /* Progress Bars */
-
 .progress-bars div {
   margin-bottom: 15px;
 }
@@ -281,8 +302,6 @@ a {
   border-radius: 10px;
   transition: width 0.3s ease;
 }
-
-
 
 /* Modal Styling */
 .modal {
@@ -337,8 +356,8 @@ a {
   .nav-item i {
     font-size: 18px;
   }
-  
 }
+
 /* Dropdown Menu Styling */
 .more-options {
   position: relative;
@@ -352,9 +371,12 @@ a {
   cursor: pointer;
 }
 
+
+
 .dropdown-content {
   display: none;
   position: absolute;
+  left: 0; /* Positioning dropdown to the left */
   background-color: #f9f9f9;
   min-width: 150px;
   box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);

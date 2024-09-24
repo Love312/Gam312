@@ -18,7 +18,7 @@
       <!-- Transactions will be populated here -->
     </section>
 
-     <!-- Buttons to Add Winnings, Spending -->
+    <!-- Buttons to Add Winnings, Spending -->
     <div class="add-buttons">
       <button id="addWinningsBtn" class="btn-primary">+ Winnings</button>
       <button id="addSpendingBtn" class="btn-secondary">- Spending</button>
@@ -89,38 +89,35 @@
       </div>
     </div>
 
-    <!-- Bottom Navigation Bar -->
-    <nav class="bottom-nav">
-      <button class="nav-item" id="navBudgets">
-        <i class="icon-home"></i>
-        <span>Budgets</span>
-      </button>
-      <button class="nav-item" id="navStarred">
-        <i class="icon-star"></i>
-        <span>Starred</span>
-      </button>
-      <button class="nav-item" id="navSettings">
-        <i class="icon-settings"></i>
-        <span>Settings</span>
-      </button>
-      <button class="nav-item" id="navAccount">
-        <i class="icon-account"></i>
-        <span>Account</span>
-      </button>
-    </nav>
+<!-- Bottom Navigation Bar -->
+<nav class="bottom-nav">
+  <button class="nav-item" id="navBudgets">
+    <img src="https://cdn.glitch.global/365f1e75-0b97-4b44-b5f2-0ac8913c7a83/Budgets.png?v=1727123260272" alt="Budgets Icon" />
+    <span>Budgets</span>
+  </button>
+  <button class="nav-item" id="navStarred">
+    <img src="https://cdn.glitch.global/365f1e75-0b97-4b44-b5f2-0ac8913c7a83/Starred.png?v=1727122976570" alt="Starred Icon" />
+    <span>Starred</span>
+  </button>
+  <button class="nav-item" id="navSettings">
+    <img src="https://cdn.glitch.global/365f1e75-0b97-4b44-b5f2-0ac8913c7a83/Settings.png?v=1727125453252" alt="Settings Icon" />
+    <span>Settings</span>
+  </button>
+  <button class="nav-item" id="navAccount">
+    <img src="https://cdn.glitch.global/365f1e75-0b97-4b44-b5f2-0ac8913c7a83/Accounts.png?v=1727125404044" alt="Account Icon" />
+    <span>Account</span>
+  </button>
+</nav>
   </div>
 
   <script>
-    // Get the budget index from the URL
     const urlParams = new URLSearchParams(window.location.search);
     const budgetIndex = urlParams.get('budgetIndex');
 
-    // Retrieve the balance sheets and transactions from localStorage
     let balanceSheets = JSON.parse(localStorage.getItem('balanceSheets')) || [];
     let transactions = JSON.parse(localStorage.getItem('transactions')) || {};
     let spendingLimits = JSON.parse(localStorage.getItem('spendingLimits')) || { weekly: 0, monthly: 0, yearly: 0 };
 
-    // Display the budget data
     if (budgetIndex !== null && balanceSheets[budgetIndex]) {
       const budget = balanceSheets[budgetIndex];
       document.getElementById('budgetTitle').textContent = budget.title;
@@ -131,27 +128,130 @@
       document.getElementById('budgetTitle').textContent = 'Budget Not Found';
     }
 
-    // Function to render transactions
-    function renderTransactions(budgetTitle) {
-      const transactionsList = transactions[budgetTitle] || [];
-      const transactionsContainer = document.getElementById('transactions');
-      transactionsContainer.innerHTML = '';
+   function renderTransactions(budgetTitle) {
+  const transactionsList = transactions[budgetTitle] || [];
+  const transactionsContainer = document.getElementById('transactions');
+  transactionsContainer.innerHTML = '';
 
-      transactionsList.forEach((transaction) => {
-        const transactionItem = document.createElement('div');
-        transactionItem.classList.add('transaction-item');
-        transactionItem.innerHTML = `
-          <div>
-            <p class="transaction-details">${transaction.details}</p>
-            <p class="transaction-date">${transaction.date}</p>
-          </div>
-          <p class="transaction-amount ${transaction.type}">${transaction.type === 'income' ? '+' : '-'} $${transaction.amount.toFixed(2)}</p>
-        `;
+  transactionsList.forEach((transaction, index) => {
+    const transactionItem = document.createElement('div');
+    transactionItem.classList.add('transaction-item');
+    transactionItem.innerHTML = `
+      <!-- More Options Menu for each transaction (Appears first) -->
+      <div class="transaction-options">
+        <button class="more-btn">⋮</button>
+        <div class="transaction-dropdown-content">
+          <button class="edit-transaction-btn" data-index="${index}">Edit</button>
+          <button class="delete-transaction-btn" data-index="${index}">Delete</button>
+          <button class="duplicate-transaction-btn" data-index="${index}">Duplicate</button>
+        </div>
+      </div>
+
+      <!-- Transaction Details -->
+      <div class="transaction-details">
+        <p>${transaction.details}</p>
+        <p>${transaction.date}</p>
+      </div>
+
+      <!-- Transaction Amount -->
+      <p class="transaction-amount ${transaction.type}">${transaction.type === 'income' ? '+' : '-'} $${transaction.amount.toFixed(2)}</p>
+    `;
         transactionsContainer.appendChild(transactionItem);
+
+        // More Options Dropdown interaction
+        const moreBtn = transactionItem.querySelector('.more-btn');
+        const transactionOptions = transactionItem.querySelector('.transaction-options');
+
+        moreBtn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          transactionOptions.classList.toggle('active');
+        });
+
+        // Edit Transaction
+        const editBtn = transactionItem.querySelector('.edit-transaction-btn');
+        editBtn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          openEditTransactionModal(index, budgetTitle);
+        });
+
+        // Delete Transaction
+        const deleteBtn = transactionItem.querySelector('.delete-transaction-btn');
+        deleteBtn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          deleteTransaction(index, budgetTitle);
+        });
+
+        // Duplicate Transaction
+        const duplicateBtn = transactionItem.querySelector('.duplicate-transaction-btn');
+        duplicateBtn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          duplicateTransaction(index, budgetTitle);
+        });
       });
     }
 
-    // Function to calculate and display income, expenses, and balance
+    // Open modal to edit a transaction
+    function openEditTransactionModal(index, budgetTitle) {
+      const transaction = transactions[budgetTitle][index];
+      if (!transaction) {
+        console.error('Transaction not found');
+        return;
+      }
+
+      document.getElementById('transactionAmount').value = transaction.amount;
+      document.getElementById('transactionDate').value = transaction.date;
+      document.getElementById('transactionDetails').value = transaction.details;
+
+      document.getElementById('saveTransactionBtn').onclick = function () {
+        const newAmount = parseFloat(document.getElementById('transactionAmount').value);
+        const newDate = document.getElementById('transactionDate').value;
+        const newDetails = document.getElementById('transactionDetails').value;
+
+        if (newAmount && newDate && newDetails) {
+          transactions[budgetTitle][index] = { 
+            amount: newAmount, 
+            date: newDate, 
+            details: newDetails, 
+            type: transaction.type
+          };
+          localStorage.setItem('transactions', JSON.stringify(transactions));
+          renderTransactions(budgetTitle);
+          document.getElementById('transactionModal').classList.remove('active');
+        } else {
+          alert('Please fill out all fields.');
+        }
+      };
+
+      document.getElementById('transactionModal').classList.add('active');
+    }
+
+    // Delete a transaction
+    function deleteTransaction(index, budgetTitle) {
+      transactions[budgetTitle].splice(index, 1);
+      localStorage.setItem('transactions', JSON.stringify(transactions));
+      renderTransactions(budgetTitle);
+    }
+
+    // Duplicate a transaction
+    function duplicateTransaction(index, budgetTitle) {
+      const transaction = transactions[budgetTitle][index];
+      if (transaction) {
+        const newTransaction = { ...transaction };
+        transactions[budgetTitle].push(newTransaction);
+        localStorage.setItem('transactions', JSON.stringify(transactions));
+        renderTransactions(budgetTitle);
+      } else {
+        console.error('Transaction not found for duplication');
+      }
+    }
+
+    // Close transaction modal
+    document.getElementById('closeModal').addEventListener('click', function () {
+      document.getElementById('transactionModal').classList.remove('active');
+    });
+    
+    
+        // Function to calculate and display income, expenses, and balance
     function calculateSummary() {
       const budgetTitle = balanceSheets[budgetIndex].title;
       const transactionsList = transactions[budgetTitle] || [];
@@ -310,8 +410,6 @@
       calculateSummary();
       updateProgressBars(); // Recalculate and update progress bars after adding a transaction
     });
-    
-    
     
     
 
