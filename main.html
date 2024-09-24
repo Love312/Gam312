@@ -5,26 +5,51 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Main Page</title>
   <link rel="stylesheet" href="style.css">
+  
+ <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Load and apply appearance settings from localStorage
+    function loadAppearanceSettings() {
+      const savedColor = localStorage.getItem('appColor') || '#9072a5';
+      const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+
+      // Apply the saved color to the app's main color
+      document.documentElement.style.setProperty('--main-color', savedColor);
+
+      // Apply dark mode if it's enabled
+      if (savedDarkMode) {
+        document.documentElement.style.setProperty('--main-bg-color', '#333');
+        document.documentElement.style.setProperty('--text-color', '#fff');
+        document.documentElement.style.setProperty('--header-footer-text-color', '#fff');
+      } else {
+        document.documentElement.style.setProperty('--main-bg-color', '#f5f5f5');
+        document.documentElement.style.setProperty('--text-color', '#000');
+        document.documentElement.style.setProperty('--header-footer-text-color', '#fff');
+      }
+    }
+
+    // Run the function after the DOM is loaded
+    loadAppearanceSettings();
+  });
+</script>
+
 </head>
 <body>
-  <div class="container">
 
      <!-- Header -->
     <header>
-
       <button class="add-btn" id="addBudgetBtn">
-      <img src="https://cdn.glitch.global/365f1e75-0b97-4b44-b5f2-0ac8913c7a83/Add.png?v=1727123138887" alt="Plus Icon" class="header-image"/>
+      <img src="https://cdn.glitch.global/20fa767d-5127-435b-95e6-5b2cbd1b7bee/New-budget.png?v=1727197212081" alt="NewBudget" class="header-image"/>
       </button>
       
-            <img src="https://cdn.glitch.global/365f1e75-0b97-4b44-b5f2-0ac8913c7a83/Budgets.png?v=1727123260272" alt="Budgets Icon" class="header-image large-image" />
-
+      <img src="https://cdn.glitch.global/365f1e75-0b97-4b44-b5f2-0ac8913c7a83/Budgets.png?v=1727123260272" alt="Budgets Icon" class="header-image large-image" />
       
       <button class="menu-btn"> 
-      <img src="https://cdn.glitch.global/365f1e75-0b97-4b44-b5f2-0ac8913c7a83/Menu.png?v=1727126872847" alt="Plus Icon" class="header-image" />
+      <img src="https://cdn.glitch.global/365f1e75-0b97-4b44-b5f2-0ac8913c7a83/Menu.png?v=1727126872847" alt="Menu Icon" class="header-image" />
       </button>
-
     </header>
 
+  <div class="container">
 
     <!-- Budget List Section -->
     <section class="budget-list" id="budgetPages">
@@ -54,28 +79,30 @@
       </div>
     </div>
 
-<!-- Bottom Navigation Bar -->
-<nav class="bottom-nav">
-  <button class="nav-item" id="navBudgets">
-    <img src="https://cdn.glitch.global/365f1e75-0b97-4b44-b5f2-0ac8913c7a83/Budgets.png?v=1727123260272" alt="Budgets Icon" />
-    <span>Budgets</span>
-  </button>
-  <button class="nav-item" id="navStarred">
-    <img src="https://cdn.glitch.global/365f1e75-0b97-4b44-b5f2-0ac8913c7a83/Starred.png?v=1727122976570" alt="Starred Icon" />
-    <span>Starred</span>
-  </button>
-  <button class="nav-item" id="navSettings">
-    <img src="https://cdn.glitch.global/365f1e75-0b97-4b44-b5f2-0ac8913c7a83/Settings.png?v=1727125453252" alt="Settings Icon" />
-    <span>Settings</span>
-  </button>
-  <button class="nav-item" id="navAccount">
-    <img src="https://cdn.glitch.global/365f1e75-0b97-4b44-b5f2-0ac8913c7a83/Accounts.png?v=1727125404044" alt="Account Icon" />
-    <span>Account</span>
-  </button>
-</nav>
+    <!-- Bottom Navigation Bar -->
+    <nav class="bottom-nav">
+      <button class="nav-item" id="navBudgets">
+        <img src="https://cdn.glitch.global/365f1e75-0b97-4b44-b5f2-0ac8913c7a83/Budgets.png?v=1727123260272" alt="Budgets Icon" />
+        <span>Budgets</span>
+      </button>
+      <button class="nav-item" id="navStarred">
+        <img src="https://cdn.glitch.global/365f1e75-0b97-4b44-b5f2-0ac8913c7a83/Starred.png?v=1727122976570" alt="Starred Icon" />
+        <span>Starred</span>
+      </button>
+      <button class="nav-item" id="navSettings">
+        <img src="https://cdn.glitch.global/365f1e75-0b97-4b44-b5f2-0ac8913c7a83/Settings.png?v=1727125453252" alt="Settings Icon" />
+        <span>Settings</span>
+      </button>
+      <button class="nav-item" id="navAccount">
+        <img src="https://cdn.glitch.global/365f1e75-0b97-4b44-b5f2-0ac8913c7a83/Accounts.png?v=1727125404044" alt="Account Icon" />
+        <span>Account</span>
+      </button>
+    </nav>
 
   </div>
 
   <script src="script.js"></script>
+
 </body>
+
 </html>

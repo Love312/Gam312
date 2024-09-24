@@ -5,9 +5,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Account</title>
   <link rel="stylesheet" href="style.css">
+  
+  <script>
+// Function to load appearance settings and apply them
+function loadAppearanceSettings() {
+  const savedColor = localStorage.getItem('appColor') || '#9072a5'; // Default color
+  const savedDarkMode = localStorage.getItem('darkMode') === 'true'; // Get dark mode setting
+  
+  // Apply the saved color and dark mode settings
+  document.documentElement.style.setProperty('--main-color', savedColor);
+  
+  if (savedDarkMode) {
+    document.documentElement.style.setProperty('--main-bg-color', '#333');
+    document.documentElement.style.setProperty('--text-color', '#fff');
+    document.documentElement.style.setProperty('--header-footer-text-color', '#fff');
+  } else {
+    document.documentElement.style.setProperty('--main-bg-color', '#f5f5f5');
+    document.documentElement.style.setProperty('--text-color', '#000');
+    document.documentElement.style.setProperty('--header-footer-text-color', '#fff');
+  }
+}
+
+// Load appearance settings when the page loads
+window.onload = function () {
+  loadAppearanceSettings();
+};
+</script>
+
 </head>
 <body>
-  <div class="container">
+  
 
   
     <!-- Header -->
@@ -15,24 +42,26 @@
     <img src="https://cdn.glitch.global/365f1e75-0b97-4b44-b5f2-0ac8913c7a83/Accounts.png?v=1727125404044" alt="Account Icon" class="header-image large-image"/>
    
     </header>
-
+<div class="container">
 
     <!-- Account Information Section -->
     <section class="account-section">
-      <h2>Plan Status</h2>
+      <h2>Plan Status</h2><div class="spacer"></div>
       <div class="account-item">
         <span>Current Plan:</span>
-        <span id="currentPlan">Free</span>
+        <span id="currentPlan">Free</span><div class="spacer"></div>
         <button class="btn-secondary">Upgrade Plan</button>
       </div>
+<div class="spacer"></div>
 
-      <h2>Manage Account</h2>
-      <div class="account-item">
-        <button class="btn-secondary" id="changeEmailBtn">Change Email Address</button>
-      </div>
+      <h2>Manage Account</h2><div class="spacer"></div>
+
+      
+
       <div class="account-item">
         <button class="btn-secondary" id="logoutBtn">Log Out</button>
-      </div>
+      </div><div class="spacer"></div>
+
       <div class="account-item">
         <button class="btn-secondary" id="deleteAccountBtn">Delete Account</button>
       </div>

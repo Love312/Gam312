@@ -5,35 +5,60 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Custom Budget Template</title>
   <link rel="stylesheet" href="style.css">
+
+  
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Load and apply appearance settings from localStorage
+    function loadAppearanceSettings() {
+      const savedColor = localStorage.getItem('appColor') || '#9072a5';
+      const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+
+      // Apply the saved color to the app's main color
+      document.documentElement.style.setProperty('--main-color', savedColor);
+
+      // Apply dark mode if it's enabled
+      if (savedDarkMode) {
+        document.documentElement.style.setProperty('--main-bg-color', '#333');
+        document.documentElement.style.setProperty('--text-color', '#fff');
+        document.documentElement.style.setProperty('--header-footer-text-color', '#fff');
+      } else {
+        document.documentElement.style.setProperty('--main-bg-color', '#f5f5f5');
+        document.documentElement.style.setProperty('--text-color', '#000');
+        document.documentElement.style.setProperty('--header-footer-text-color', '#fff');
+      }
+    }
+
+    // Run the function after the DOM is loaded
+    loadAppearanceSettings();
+  });
+</script>
+
 </head>
 <body>
   
     <!-- Title of the budget sheet -->
     <header>
       
-       <button id="addWinningsBtn" class="btn-primary">
+       <button id="addWinningsBtn" class="add-btn">
       <img src="https://cdn.glitch.global/20fa767d-5127-435b-95e6-5b2cbd1b7bee/winnings.png?v=1727197235815" alt="Plus Icon" class="header-image"/>
       </button>
       
-      <h1 id="budgetTitle">Loading...</h1>
-   
+      <h1 id="budgetTitle">Loading... </h1>
+      
+      <p>  <span id="balanceInHeader"></span></p>
     
-      <button id="addSpendingBtn" class="btn-secondary">
+      <button id="addSpendingBtn" class="add-btn">
       <img src="https://cdn.glitch.global/20fa767d-5127-435b-95e6-5b2cbd1b7bee/spendings.png?v=1727197257775" alt="Plus Icon" class="header-image"/>
       </button>
-   
-
-    
     </header>
+
 <div class="container">
-  
   
     <!-- Transactions List -->
     <section id="transactions">
       <!-- Transactions will be populated here -->
     </section>
-
-
 
     <!-- Toggle Visibility of Limits and Progress Bars -->
     <button id="toggleLimitsBtn" class="btn-limit">Show Spending Limits</button>
@@ -63,21 +88,20 @@
       <button id="setLimitBtn" class="btn-limit">Set Spending Limit</button>
     </div>
     
-
-<!-- Modal for Adding Transactions -->
-<div id="transactionModal" class="modal">
-  <div class="modal-content">
-    <h2 id="modalTitle">Add Transaction</h2>
-    <label for="transactionAmount">Amount:</label>
-    <input type="text" id="transactionAmount" placeholder="Amount" required>
-    <label for="transactionDate">Date:</label>
-    <input type="date" id="transactionDate" required>
-    <label for="transactionDetails">Details:</label>
-    <input type="text" id="transactionDetails" required>
-    <button id="saveTransactionBtn" class="btn-primary">Save</button>
-    <button id="closeModal" class="btn-secondary">Close</button>
-  </div>
-</div>
+    <!-- Modal for Adding Transactions -->
+    <div id="transactionModal" class="modal">
+      <div class="modal-content">
+        <h2 id="modalTitle">Add Transaction</h2>
+        <label for="transactionAmount">Amount:</label>
+        <input type="text" id="transactionAmount" placeholder="Amount" required>
+        <label for="transactionDate">Date:</label>
+        <input type="date" id="transactionDate" required>
+        <label for="transactionDetails">Details:</label>
+        <input type="text" id="transactionDetails" required>
+        <button id="saveTransactionBtn" class="btn-primary">Save</button>
+        <button id="closeModal" class="btn-secondary">Close</button>
+      </div>
+    </div>
 
     <!-- Modal for Setting Spending Limit -->
     <div id="limitModal" class="modal">
@@ -101,28 +125,31 @@
       <p>Balance: <span id="totalBalance">+ $0.00</span></p>
     </div>
 
-<!-- Bottom Navigation Bar -->
-<nav class="bottom-nav">
-  <button class="nav-item" id="navBudgets">
-    <img src="https://cdn.glitch.global/365f1e75-0b97-4b44-b5f2-0ac8913c7a83/Budgets.png?v=1727123260272" alt="Budgets Icon" />
-    <span>Budgets</span>
-  </button>
-  <button class="nav-item" id="navStarred">
-    <img src="https://cdn.glitch.global/365f1e75-0b97-4b44-b5f2-0ac8913c7a83/Starred.png?v=1727122976570" alt="Starred Icon" />
-    <span>Starred</span>
-  </button>
-  <button class="nav-item" id="navSettings">
-    <img src="https://cdn.glitch.global/365f1e75-0b97-4b44-b5f2-0ac8913c7a83/Settings.png?v=1727125453252" alt="Settings Icon" />
-    <span>Settings</span>
-  </button>
-  <button class="nav-item" id="navAccount">
-    <img src="https://cdn.glitch.global/365f1e75-0b97-4b44-b5f2-0ac8913c7a83/Accounts.png?v=1727125404044" alt="Account Icon" />
-    <span>Account</span>
-  </button>
-</nav>
-  </div>
+    <!-- Bottom Navigation Bar -->
+    <nav class="bottom-nav">
+      <button class="nav-item" id="navBudgets">
+        <img src="https://cdn.glitch.global/365f1e75-0b97-4b44-b5f2-0ac8913c7a83/Budgets.png?v=1727123260272" alt="Budgets Icon" />
+        <span>Budgets</span>
+      </button>
+      <button class="nav-item" id="navStarred">
+        <img src="https://cdn.glitch.global/365f1e75-0b97-4b44-b5f2-0ac8913c7a83/Starred.png?v=1727122976570" alt="Starred Icon" />
+        <span>Starred</span>
+      </button>
+      <button class="nav-item" id="navSettings">
+        <img src="https://cdn.glitch.global/365f1e75-0b97-4b44-b5f2-0ac8913c7a83/Settings.png?v=1727125453252" alt="Settings Icon" />
+        <span>Settings</span>
+      </button>
+      <button class="nav-item" id="navAccount">
+        <img src="https://cdn.glitch.global/365f1e75-0b97-4b44-b5f2-0ac8913c7a83/Accounts.png?v=1727125404044" alt="Account Icon" />
+        <span>Account</span>
+      </button>
+    </nav>
 
   <script>
+    
+    
+    
+    
     // Utility to get saved currency symbol
     function getCurrencySymbol() {
       return localStorage.getItem('currencySymbol') || '$'; // Default to USD ($)
@@ -256,12 +283,12 @@
       }
     }
 
-    function calculateSummary(budgetTitle) {
+   function calculateSummary(budgetTitle) {
       const transactionsList = transactions[budgetTitle] || [];
       let totalIncome = 0;
       let totalExpenses = 0;
 
-      transactionsList.forEach(transaction => {
+      transactionsList.forEach((transaction) => {
         if (transaction.type === 'income') {
           totalIncome += transaction.amount;
         } else {
@@ -270,9 +297,14 @@
       });
 
       const totalBalance = totalIncome - totalExpenses;
+      
+      // Update the summary section
       document.getElementById('totalIncome').textContent = `+ ${getCurrencySymbol()}${totalIncome.toFixed(2)}`;
       document.getElementById('totalExpenses').textContent = `- ${getCurrencySymbol()}${totalExpenses.toFixed(2)}`;
       document.getElementById('totalBalance').textContent = `${totalBalance >= 0 ? '+' : '-'} ${getCurrencySymbol()}${Math.abs(totalBalance).toFixed(2)}`;
+
+      // Update the balance in the header
+      document.getElementById('balanceInHeader').textContent = `${totalBalance >= 0 ? '+' : '-'} ${getCurrencySymbol()}${Math.abs(totalBalance).toFixed(2)}`;
     }
 
     function updateProgressBars(budgetTitle) {
@@ -310,6 +342,7 @@
         progressBar.style.backgroundColor = 'green';
       }
     }
+
     // Function to toggle the limits section
     document.getElementById('toggleLimitsBtn').addEventListener('click', function () {
       const limitSection = document.getElementById('limitSection');
@@ -407,68 +440,6 @@
       navigateTo('account.html');
     });
 
-    // Function to calculate and display income, expenses, and balance
-    function calculateSummary(budgetTitle) {
-      const transactionsList = transactions[budgetTitle] || [];
-      let totalIncome = 0;
-      let totalExpenses = 0;
-
-      transactionsList.forEach((transaction) => {
-        if (transaction.type === 'income') {
-          totalIncome += transaction.amount;
-        } else {
-          totalExpenses += transaction.amount;
-        }
-      });
-
-      const totalBalance = totalIncome - totalExpenses;
-      document.getElementById('totalIncome').textContent = `+ ${getCurrencySymbol()}${totalIncome.toFixed(2)}`;
-      document.getElementById('totalExpenses').textContent = `- ${getCurrencySymbol()}${totalExpenses.toFixed(2)}`;
-      document.getElementById('totalBalance').textContent = `${totalBalance >= 0 ? '+' : '-'} ${getCurrencySymbol()}${Math.abs(totalBalance).toFixed(2)}`;
-    }
-
-    // Function to update progress bars based on spending limits and expenses
-    function updateProgressBars(budgetTitle) {
-      const transactionsList = transactions[budgetTitle] || [];
-      let totalExpenses = 0;
-
-      transactionsList.forEach((transaction) => {
-        if (transaction.type === 'expense') {
-          totalExpenses += transaction.amount;
-        }
-      });
-
-      const weeklyLimit = spendingLimits.weekly || 0;
-      const monthlyLimit = spendingLimits.monthly || 0;
-      const yearlyLimit = spendingLimits.yearly || 0;
-
-      const weeklyProgress = weeklyLimit > 0 ? (totalExpenses / weeklyLimit) * 100 : 0;
-      const monthlyProgress = monthlyLimit > 0 ? (totalExpenses / monthlyLimit) * 100 : 0;
-      const yearlyProgress = yearlyLimit > 0 ? (totalExpenses / yearlyLimit) * 100 : 0;
-
-      updateProgress('weekly', weeklyProgress);
-      updateProgress('monthly', monthlyProgress);
-      updateProgress('yearly', yearlyProgress);
-    }
-
-    // Helper function to update individual progress bars
-    function updateProgress(type, progress) {
-      const progressBar = document.getElementById(`${type}ProgressBar`);
-      const progressText = document.getElementById(`${type}LimitProgress`);
-      progressBar.style.width = `${Math.min(progress, 100)}%`;
-      progressText.textContent = `${Math.min(progress, 100).toFixed(0)}%`;
-
-      if (progress >= 100) {
-        progressBar.style.backgroundColor = 'red';
-      } else if (progress >= 75) {
-        progressBar.style.backgroundColor = 'orange';
-      } else if (progress >= 50) {
-        progressBar.style.backgroundColor = 'yellow';
-      } else {
-        progressBar.style.backgroundColor = 'green';
-      }
-    }
-
     // Initialize the page and render the budget
     window.onload = function () {
       if (budgetIndex !== null && balanceSheets[budgetIndex]) {
@@ -479,6 +450,10 @@
       }
     };
 
+    
+  
   </script>
+
+  </div> 
 </body>
 </html>

@@ -313,6 +313,8 @@ document.getElementById('totalIncome').textContent = `+ ${getCurrencySymbol()}${
 document.getElementById('totalExpenses').textContent = `- ${getCurrencySymbol()}${totalExpenses.toFixed(2)}`;
 document.getElementById('totalBalance').textContent = `${totalBalance >= 0 ? '+' : '-'} ${getCurrencySymbol()}${Math.abs(totalBalance).toFixed(2)}`;
 
+  
+  
 }
 
 // Function to update progress bars (weekly, monthly, yearly spending limits)
@@ -456,3 +458,49 @@ document.getElementById('saveCurrencyBtn')?.addEventListener('click', function (
 
   document.getElementById('currencyModal').classList.remove('active');
 });
+
+// Function to update appearance settings (color and dark mode)
+function updateAppearanceSettings() {
+  // Get color selection
+  const selectedColor = document.getElementById('colorPicker').value || '#9072a5'; // Default color
+  
+  // Get dark mode toggle state
+  const darkModeEnabled = document.getElementById('darkModeToggle').checked;
+  
+  // Update CSS variables
+  document.documentElement.style.setProperty('--main-color', selectedColor);
+
+  if (darkModeEnabled) {
+    document.documentElement.style.setProperty('--main-bg-color', '#333');
+    document.documentElement.style.setProperty('--text-color', '#fff');
+    document.documentElement.style.setProperty('--header-footer-text-color', '#fff');
+  } else {
+    document.documentElement.style.setProperty('--main-bg-color', '#f5f5f5');
+    document.documentElement.style.setProperty('--text-color', '#000');
+    document.documentElement.style.setProperty('--header-footer-text-color', '#fff');
+  }
+  
+  // Save settings in localStorage
+  localStorage.setItem('appColor', selectedColor);
+  localStorage.setItem('darkMode', darkModeEnabled);
+}
+
+// Load settings from localStorage when the page loads
+function loadAppearanceSettings() {
+  const savedColor = localStorage.getItem('appColor') || '#9072a5';
+  const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+
+  document.getElementById('colorPicker').value = savedColor;
+  document.getElementById('darkModeToggle').checked = savedDarkMode;
+
+  // Apply the saved settings
+  updateAppearanceSettings();
+}
+
+// Event listener for saving appearance settings
+document.getElementById('saveAppearanceBtn').addEventListener('click', updateAppearanceSettings);
+
+// Call function to load appearance settings when the page loads
+window.onload = function () {
+  loadAppearanceSettings();
+};

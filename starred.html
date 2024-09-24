@@ -5,9 +5,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Starred Entries</title>
   <link rel="stylesheet" href="style.css">
+  
+  <script>
+// Function to load appearance settings and apply them
+function loadAppearanceSettings() {
+  const savedColor = localStorage.getItem('appColor') || '#9072a5'; // Default color
+  const savedDarkMode = localStorage.getItem('darkMode') === 'true'; // Get dark mode setting
+  
+  // Apply the saved color and dark mode settings
+  document.documentElement.style.setProperty('--main-color', savedColor);
+  
+  if (savedDarkMode) {
+    document.documentElement.style.setProperty('--main-bg-color', '#333');
+    document.documentElement.style.setProperty('--text-color', '#fff');
+    document.documentElement.style.setProperty('--header-footer-text-color', '#fff');
+  } else {
+    document.documentElement.style.setProperty('--main-bg-color', '#f5f5f5');
+    document.documentElement.style.setProperty('--text-color', '#000');
+    document.documentElement.style.setProperty('--header-footer-text-color', '#fff');
+  }
+}
+
+// Load appearance settings when the page loads
+window.onload = function () {
+  loadAppearanceSettings();
+};
+</script>
+
 </head>
 <body>
-  <div class="container">
+
 
     <!-- Header -->
     <header>
@@ -15,7 +42,7 @@
  
       
     </header>
-
+  <div class="container">
     <!-- Starred Entries List -->
     <section class="starred-list" id="starredEntries">
       <!-- Starred entries will be dynamically listed here -->
