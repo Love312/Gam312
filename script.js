@@ -28,6 +28,7 @@ document.getElementById('loginForm')?.addEventListener('submit', function (e) {
 // Initialize balance sheets and transactions
 let balanceSheets = JSON.parse(localStorage.getItem('balanceSheets')) || [];
 let transactions = JSON.parse(localStorage.getItem('transactions')) || {};
+let spendingLimits = JSON.parse(localStorage.getItem('spendingLimits')) || { weekly: 0, monthly: 0, yearly: 0 };
 
 // Render the balance sheets with the options button appearing first
 function renderBalanceSheets() {
@@ -207,8 +208,9 @@ function renderTransactions(budgetTitle) {
       duplicateTransaction(index, budgetTitle);
     });
   });
-  
-  
+
+  calculateSummary(budgetTitle); // Update summary after rendering transactions
+  updateProgressBars(budgetTitle); // Update progress bars after rendering transactions
 }
 
 // Edit transaction modal logic
@@ -236,7 +238,7 @@ function openEditTransactionModal(index, budgetTitle) {
         type: transaction.type
       };
       localStorage.setItem('transactions', JSON.stringify(transactions));
-      window.location.reload(); // Refresh the page after saving edits
+      renderTransactions(budgetTitle); // Refresh the transaction list
     } else {
       alert('Please fill out all fields.');
     }
@@ -249,7 +251,7 @@ function openEditTransactionModal(index, budgetTitle) {
 function deleteTransaction(index, budgetTitle) {
   transactions[budgetTitle].splice(index, 1); // Remove the transaction
   localStorage.setItem('transactions', JSON.stringify(transactions)); // Update localStorage
-  window.location.reload(); // Refresh the page after deletion
+  renderTransactions(budgetTitle); // Re-render the transactions list
 }
 
 // Duplicate transaction
@@ -259,7 +261,7 @@ function duplicateTransaction(index, budgetTitle) {
     const newTransaction = { ...transaction }; // Duplicate the transaction
     transactions[budgetTitle].push(newTransaction); // Add the duplicated transaction
     localStorage.setItem('transactions', JSON.stringify(transactions)); // Update localStorage
-    window.location.reload(); // Refresh the page after duplication
+    renderTransactions(budgetTitle); // Re-render the transactions list
   }
 }
 
@@ -268,6 +270,74 @@ document.getElementById('closeModal').addEventListener('click', function () {
   document.getElementById('transactionModal').classList.remove('active');
 });
 
+// Function to calculate the summary (income, expenses, and balance)
+function calculateSummary(budgetTitle) {
+  const transactionsList = transactions[budgetTitle] || [];
+  let totalIncome = 0;
+  let totalExpenses = 0;
+
+  transactionsList.forEach((transaction) => {
+    if (transaction.type === 'income') {
+      totalIncome += transaction.amount;
+    } else {
+      totalExpenses += transaction.amount;
+    }
+  });
+
+  const totalBalance = totalIncome - totalExpenses;
+  document.getElementById('totalIncome').textContent = `+ $${totalIncome.toFixed(2)}`;
+  document.getElementById('totalExpenses').textContent = `- $${totalExpenses.toFixed(2)}`;
+  document.getElementById('totalBalance').textContent = `${totalBalance >= 0 ? '+' : '-'} $${Math.abs(totalBalance).toFixed(2)}`;
+}
+
+// Function to update progress bars (weekly, monthly, yearly spending limits)
+function updateProgressBars(budgetTitle) {
+  const transactionsList = transactions[budgetTitle] || [];
+  let totalExpenses = 0;
+
+  transactionsList.forEach((transaction) => {
+    if (transaction.type === 'expense') {
+      totalExpenses += transaction.amount;
+    }
+  });
+
+  const weeklyLimit = spendingLimits.weekly || 0;
+  const monthlyLimit = spendingLimits.monthly || 0;
+  const yearlyLimit = spendingLimits.yearly || 0;
+
+  const weeklyProgress = weeklyLimit > 0 ? (totalExpenses / weeklyLimit) * 100 : 0;
+  const monthlyProgress = monthlyLimit > 0 ? (totalExpenses / monthlyLimit) * 100 : 0;
+  const yearlyProgress = yearlyLimit > 0 ? (totalExpenses / yearlyLimit) * 100 : 0;
+
+  // Update weekly progress bar
+  document.getElementById('weeklyLimitProgress').textContent = `${Math.min(weeklyProgress, 100).toFixed(0)}%`;
+  document.getElementById('weeklyProgressBar').style.width = `${Math.min(weeklyProgress, 100)}%`;
+  updateProgressBarColor('weeklyProgressBar', weeklyProgress);
+
+  // Update monthly progress bar
+  document.getElementById('monthlyLimitProgress').textContent = `${Math.min(monthlyProgress, 100).toFixed(0)}%`;
+  document.getElementById('monthlyProgressBar').style.width = `${Math.min(monthlyProgress, 100)}%`;
+  updateProgressBarColor('monthlyProgressBar', monthlyProgress);
+
+  // Update yearly progress bar
+  document.getElementById('yearlyLimitProgress').textContent = `${Math.min(yearlyProgress, 100).toFixed(0)}%`;
+  document.getElementById('yearlyProgressBar').style.width = `${Math.min(yearlyProgress, 100)}%`;
+  updateProgressBarColor('yearlyProgressBar', yearlyProgress);
+}
+
+// Helper function to update progress bar color based on progress percentage
+function updateProgressBarColor(barId, progress) {
+  const bar = document.getElementById(barId);
+  if (progress >= 100) {
+    bar.style.backgroundColor = 'red';
+  } else if (progress >= 75) {
+    bar.style.backgroundColor = 'orange';
+  } else if (progress >= 50) {
+    bar.style.backgroundColor = 'yellow';
+  } else {
+    bar.style.backgroundColor = 'green';
+  }
+}
 
 // Show/Hide Spending Limits Logic
 document.getElementById('toggleLimitsBtn')?.addEventListener('click', function () {

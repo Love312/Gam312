@@ -8,11 +8,13 @@
 </head>
 <body>
   <div class="container">
-  <!-- Header -->
+
+    <!-- Header -->
     <header>
       <img src="https://cdn.glitch.global/365f1e75-0b97-4b44-b5f2-0ac8913c7a83/Settings.png?v=1727125453252" alt="Settings Icon" class="header-image large-image" />
 
     </header>
+
     <!-- Settings Options -->
     <section class="settings-section">
       <h2>Account Details</h2>
@@ -42,7 +44,8 @@
         </select>
       </div>
     </section>
-
+    
+    
 <!-- Bottom Navigation Bar -->
 <nav class="bottom-nav">
   <button class="nav-item" id="navBudgets">
@@ -65,6 +68,26 @@
 
   </div>
 
-  <script src="script.js"></script>
+  <script>
+
+  // Navigation button event listeners
+  document.getElementById('navBudgets')?.addEventListener('click', function () {
+    window.location.href = 'main.html'; // Change this to the correct page path
+  });
+
+  document.getElementById('navStarred')?.addEventListener('click', function () {
+    window.location.href = 'starred.html'; // Change this to the correct page path
+  });
+
+  document.getElementById('navSettings')?.addEventListener('click', function () {
+    window.location.href = 'settings.html'; // Change this to the correct page path
+  });
+
+  document.getElementById('navAccount')?.addEventListener('click', function () {
+    window.location.href = 'account.html'; // Change this to the correct page path
+  });
+
+  
+  </script>
 </body>
 </html>
