@@ -38,6 +38,23 @@ function renderBalanceSheets() {
   budgetPages.innerHTML = ''; // Clear existing budgets
 
   balanceSheets.forEach((sheet, index) => {
+    const budgetTitle = sheet.title;
+    const transactionsList = transactions[budgetTitle] || [];
+    let totalIncome = 0;
+    let totalExpenses = 0;
+
+    // Calculate the current balance for each budget
+    transactionsList.forEach((transaction) => {
+      if (transaction.type === 'income') {
+        totalIncome += transaction.amount;
+      } else {
+        totalExpenses += transaction.amount;
+      }
+    });
+
+    const updatedBalance = totalIncome - totalExpenses;
+    sheet.amount = updatedBalance; // Ensure the balance is stored
+
     const budgetItem = document.createElement('div');
     budgetItem.classList.add('budget-item');
     budgetItem.innerHTML = `
@@ -50,12 +67,11 @@ function renderBalanceSheets() {
         </div>
       </div>
       <span class="description">${sheet.title}</span>
-      <span class="amount">+ $${sheet.amount.toFixed(2)}</span>
-    `;
-
+     <span class="amount">${updatedBalance >= 0 ? '+' : '-'} ${getCurrencySymbol()}${Math.abs(updatedBalance).toFixed(2)}</span>
+`;
     budgetPages.appendChild(budgetItem);
 
-    // Make the budget item clickable to open the custom balance sheet
+    // Make the budget item clickable to open the custom budget sheet
     budgetItem.addEventListener('click', function () {
       navigateTo(`custom_budget_template.html?budgetIndex=${index}`);
     });
@@ -96,6 +112,9 @@ function renderBalanceSheets() {
       renderBalanceSheets();
     });
   });
+
+  // Save updated balance sheets to localStorage
+  localStorage.setItem('balanceSheets', JSON.stringify(balanceSheets));
 }
 
 // Open Rename Modal and handle renaming
@@ -163,7 +182,6 @@ function renderTransactions(budgetTitle) {
     const transactionItem = document.createElement('div');
     transactionItem.classList.add('transaction-item');
     transactionItem.innerHTML = `
-      <!-- More Options Menu for each transaction (Appears first) -->
       <div class="transaction-options">
         <button class="more-btn">⋮</button>
         <div class="transaction-dropdown-content">
@@ -173,16 +191,14 @@ function renderTransactions(budgetTitle) {
         </div>
       </div>
 
-      <!-- Transaction Details -->
       <div class="transaction-details">
         <p>${transaction.details}</p>
         <p>${transaction.date}</p>
-      </div>
+      
 
-      <!-- Transaction Amount -->
-      <p class="transaction-amount ${transaction.type}">${transaction.type === 'income' ? '+' : '-'} $${transaction.amount.toFixed(2)}</p>
-    `;
-
+      <p class="transaction-amount ${transaction.type}">
+      ${transaction.type === 'income' ? '+' : '-'} ${getCurrencySymbol()}${transaction.amount.toFixed(2)}</p>
+`;
     transactionsContainer.appendChild(transactionItem);
 
     const moreBtn = transactionItem.querySelector('.more-btn');
@@ -209,8 +225,8 @@ function renderTransactions(budgetTitle) {
     });
   });
 
-  calculateSummary(budgetTitle); // Update summary after rendering transactions
-  updateProgressBars(budgetTitle); // Update progress bars after rendering transactions
+  calculateSummary();
+  updateProgressBars();
 }
 
 // Edit transaction modal logic
@@ -238,7 +254,10 @@ function openEditTransactionModal(index, budgetTitle) {
         type: transaction.type
       };
       localStorage.setItem('transactions', JSON.stringify(transactions));
-      renderTransactions(budgetTitle); // Refresh the transaction list
+      renderTransactions(budgetTitle);
+      calculateSummary();
+      updateProgressBars();
+      document.getElementById('transactionModal').classList.remove('active');
     } else {
       alert('Please fill out all fields.');
     }
@@ -252,6 +271,8 @@ function deleteTransaction(index, budgetTitle) {
   transactions[budgetTitle].splice(index, 1); // Remove the transaction
   localStorage.setItem('transactions', JSON.stringify(transactions)); // Update localStorage
   renderTransactions(budgetTitle); // Re-render the transactions list
+  calculateSummary(); // Update the summary after deletion
+  updateProgressBars(); // Recalculate progress bars
 }
 
 // Duplicate transaction
@@ -262,6 +283,8 @@ function duplicateTransaction(index, budgetTitle) {
     transactions[budgetTitle].push(newTransaction); // Add the duplicated transaction
     localStorage.setItem('transactions', JSON.stringify(transactions)); // Update localStorage
     renderTransactions(budgetTitle); // Re-render the transactions list
+    calculateSummary(); // Update the summary after duplication
+    updateProgressBars(); // Recalculate progress bars
   }
 }
 
@@ -271,7 +294,8 @@ document.getElementById('closeModal').addEventListener('click', function () {
 });
 
 // Function to calculate the summary (income, expenses, and balance)
-function calculateSummary(budgetTitle) {
+function calculateSummary() {
+  const budgetTitle = balanceSheets?.title;
   const transactionsList = transactions[budgetTitle] || [];
   let totalIncome = 0;
   let totalExpenses = 0;
@@ -285,13 +309,15 @@ function calculateSummary(budgetTitle) {
   });
 
   const totalBalance = totalIncome - totalExpenses;
-  document.getElementById('totalIncome').textContent = `+ $${totalIncome.toFixed(2)}`;
-  document.getElementById('totalExpenses').textContent = `- $${totalExpenses.toFixed(2)}`;
-  document.getElementById('totalBalance').textContent = `${totalBalance >= 0 ? '+' : '-'} $${Math.abs(totalBalance).toFixed(2)}`;
+document.getElementById('totalIncome').textContent = `+ ${getCurrencySymbol()}${totalIncome.toFixed(2)}`;
+document.getElementById('totalExpenses').textContent = `- ${getCurrencySymbol()}${totalExpenses.toFixed(2)}`;
+document.getElementById('totalBalance').textContent = `${totalBalance >= 0 ? '+' : '-'} ${getCurrencySymbol()}${Math.abs(totalBalance).toFixed(2)}`;
+
 }
 
 // Function to update progress bars (weekly, monthly, yearly spending limits)
-function updateProgressBars(budgetTitle) {
+function updateProgressBars() {
+  const budgetTitle = balanceSheets?.title;
   const transactionsList = transactions[budgetTitle] || [];
   let totalExpenses = 0;
 
@@ -367,7 +393,66 @@ document.getElementById('navAccount')?.addEventListener('click', function () {
   navigateTo('account.html');
 });
 
-// Initialize the page and render budgets
+// Save currency symbol when "Save Currency" button is clicked
+document.getElementById('saveCurrencyBtn')?.addEventListener('click', function (e) {
+    e.preventDefault(); 
+    const currencyInput = document.getElementById('currencyInput').value;
+
+    if (currencyInput) {
+        localStorage.setItem('currencySymbol', currencyInput); // Save the currency symbol
+        alert('Currency symbol saved successfully!');
+        
+        // Re-render transactions and summary with the updated currency symbol
+        renderBalanceSheets(); // Refresh the balance sheets
+        const budgetTitle = balanceSheets[budgetIndex]?.title;
+        renderTransactions(budgetTitle); // Refresh transactions
+        calculateSummary(budgetTitle);  // Refresh summary
+    } else {
+        alert('Please select a valid currency.');
+    }
+});
+
+
+
+
+// Initialize and apply the saved currency symbol throughout the app
+function initializeCurrency() {
+    const savedCurrencySymbol = localStorage.getItem('currencySymbol');
+
+    // If a currency symbol is saved, apply it
+    if (savedCurrencySymbol) {
+        document.querySelectorAll('.currency').forEach(function (element) {
+            element.textContent = savedCurrencySymbol;
+        });
+        console.log('Loaded currency symbol:', savedCurrencySymbol); // Debugging log
+    }
+}
+
+function getCurrencySymbol() {
+  return localStorage.getItem('currencySymbol') || '$'; // Default to USD ($)
+}
+
+
 window.onload = function () {
-  renderBalanceSheets();
+  initializeCurrency(); // Apply the saved currency symbol
+  renderBalanceSheets(); // Render balance sheets
+  
+  if (balanceSheets[budgetIndex]) {
+    const budgetTitle = balanceSheets[budgetIndex].title;
+    renderTransactions(budgetTitle);  // Render transactions
+    calculateSummary(budgetTitle);   // Calculate and render summary
+  }
 };
+
+// Currency Settings Modal Logic
+document.getElementById('saveCurrencyBtn')?.addEventListener('click', function () {
+  const selectedCurrency = document.getElementById('currencyInput').value || '$';
+  localStorage.setItem('currencySymbol', selectedCurrency);
+
+  // Update the currency symbol throughout the app
+  document.querySelectorAll('.currency-symbol').forEach((el) => {
+    el.textContent = selectedCurrency;
+  });
+
+  document.getElementById('currencyModal').classList.remove('active');
+});

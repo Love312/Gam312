@@ -7,22 +7,33 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
+  
     <!-- Title of the budget sheet -->
     <header>
+      
+       <button id="addWinningsBtn" class="btn-primary">
+      <img src="https://cdn.glitch.global/20fa767d-5127-435b-95e6-5b2cbd1b7bee/winnings.png?v=1727197235815" alt="Plus Icon" class="header-image"/>
+      </button>
+      
       <h1 id="budgetTitle">Loading...</h1>
-    </header>
+   
+    
+      <button id="addSpendingBtn" class="btn-secondary">
+      <img src="https://cdn.glitch.global/20fa767d-5127-435b-95e6-5b2cbd1b7bee/spendings.png?v=1727197257775" alt="Plus Icon" class="header-image"/>
+      </button>
+   
 
+    
+    </header>
+<div class="container">
+  
+  
     <!-- Transactions List -->
     <section id="transactions">
       <!-- Transactions will be populated here -->
     </section>
 
-    <!-- Buttons to Add Winnings, Spending -->
-    <div class="add-buttons">
-      <button id="addWinningsBtn" class="btn-primary">+ Winnings</button>
-      <button id="addSpendingBtn" class="btn-secondary">- Spending</button>
-    </div>
+
 
     <!-- Toggle Visibility of Limits and Progress Bars -->
     <button id="toggleLimitsBtn" class="btn-limit">Show Spending Limits</button>
@@ -52,27 +63,21 @@
       <button id="setLimitBtn" class="btn-limit">Set Spending Limit</button>
     </div>
     
-    <!-- Summary Section for Income, Expenses, and Balance -->
-    <div class="summary-section">
-      <p>Income: <span id="totalIncome">+ $0.00</span></p>
-      <p>Expenses: <span id="totalExpenses">- $0.00</span></p>
-      <p>Balance: <span id="totalBalance">+ $0.00</span></p>
-    </div>
 
-    <!-- Modal for Adding Transactions -->
-    <div id="transactionModal" class="modal">
-      <div class="modal-content">
-        <h2 id="modalTitle">Add Transaction</h2>
-        <label for="transactionAmount">Amount:</label>
-        <input type="number" id="transactionAmount" required>
-        <label for="transactionDate">Date:</label>
-        <input type="date" id="transactionDate" required>
-        <label for="transactionDetails">Details:</label>
-        <input type="text" id="transactionDetails" required>
-        <button id="saveTransactionBtn" class="btn-primary">Save</button>
-        <button id="closeModal" class="btn-secondary">Close</button>
-      </div>
-    </div>
+<!-- Modal for Adding Transactions -->
+<div id="transactionModal" class="modal">
+  <div class="modal-content">
+    <h2 id="modalTitle">Add Transaction</h2>
+    <label for="transactionAmount">Amount:</label>
+    <input type="text" id="transactionAmount" placeholder="Amount" required>
+    <label for="transactionDate">Date:</label>
+    <input type="date" id="transactionDate" required>
+    <label for="transactionDetails">Details:</label>
+    <input type="text" id="transactionDetails" required>
+    <button id="saveTransactionBtn" class="btn-primary">Save</button>
+    <button id="closeModal" class="btn-secondary">Close</button>
+  </div>
+</div>
 
     <!-- Modal for Setting Spending Limit -->
     <div id="limitModal" class="modal">
@@ -87,6 +92,13 @@
         <button id="saveLimitBtn" class="btn-primary">Save Limits</button>
         <button id="closeLimitModal" class="btn-secondary">Close</button>
       </div>
+    </div>
+  
+   <!-- Summary Section for Income, Expenses, and Balance -->
+    <div class="summary-section">
+      <p>Income: <span id="totalIncome">+ $0.00</span></p>
+      <p>Expenses: <span id="totalExpenses">- $0.00</span></p>
+      <p>Balance: <span id="totalBalance">+ $0.00</span></p>
     </div>
 
 <!-- Bottom Navigation Bar -->
@@ -108,9 +120,14 @@
     <span>Account</span>
   </button>
 </nav>
-
+  </div>
 
   <script>
+    // Utility to get saved currency symbol
+    function getCurrencySymbol() {
+      return localStorage.getItem('currencySymbol') || '$'; // Default to USD ($)
+    }
+
     // Initial setup
     const urlParams = new URLSearchParams(window.location.search);
     const budgetIndex = urlParams.get('budgetIndex');
@@ -150,7 +167,7 @@
             <p>${transaction.details}</p>
             <p>${transaction.date}</p>
           </div>
-          <p class="transaction-amount ${transaction.type}">${transaction.type === 'income' ? '+' : '-'} $${transaction.amount.toFixed(2)}</p>
+          <p class="transaction-amount ${transaction.type}">${transaction.type === 'income' ? '+' : '-'} ${getCurrencySymbol()}${transaction.amount.toFixed(2)}</p>
         `;
         transactionsContainer.appendChild(transactionItem);
 
@@ -253,9 +270,9 @@
       });
 
       const totalBalance = totalIncome - totalExpenses;
-      document.getElementById('totalIncome').textContent = `+ $${totalIncome.toFixed(2)}`;
-      document.getElementById('totalExpenses').textContent = `- $${totalExpenses.toFixed(2)}`;
-      document.getElementById('totalBalance').textContent = `${totalBalance >= 0 ? '+' : '-'} $${Math.abs(totalBalance).toFixed(2)}`;
+      document.getElementById('totalIncome').textContent = `+ ${getCurrencySymbol()}${totalIncome.toFixed(2)}`;
+      document.getElementById('totalExpenses').textContent = `- ${getCurrencySymbol()}${totalExpenses.toFixed(2)}`;
+      document.getElementById('totalBalance').textContent = `${totalBalance >= 0 ? '+' : '-'} ${getCurrencySymbol()}${Math.abs(totalBalance).toFixed(2)}`;
     }
 
     function updateProgressBars(budgetTitle) {
@@ -405,9 +422,9 @@
       });
 
       const totalBalance = totalIncome - totalExpenses;
-      document.getElementById('totalIncome').textContent = `+ $${totalIncome.toFixed(2)}`;
-      document.getElementById('totalExpenses').textContent = `- $${totalExpenses.toFixed(2)}`;
-      document.getElementById('totalBalance').textContent = `${totalBalance >= 0 ? '+' : '-'} $${Math.abs(totalBalance).toFixed(2)}`;
+      document.getElementById('totalIncome').textContent = `+ ${getCurrencySymbol()}${totalIncome.toFixed(2)}`;
+      document.getElementById('totalExpenses').textContent = `- ${getCurrencySymbol()}${totalExpenses.toFixed(2)}`;
+      document.getElementById('totalBalance').textContent = `${totalBalance >= 0 ? '+' : '-'} ${getCurrencySymbol()}${Math.abs(totalBalance).toFixed(2)}`;
     }
 
     // Function to update progress bars based on spending limits and expenses
